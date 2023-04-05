@@ -1,0 +1,6 @@
+:py:mod:`ice_pick.connection.snowpark`
+======================================
+
+.. py:module:: ice_pick.connection.snowpark
+
+

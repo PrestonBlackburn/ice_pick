@@ -1,0 +1,6 @@
+:py:mod:`ice_pick.metadata.descriptions.ddl`
+============================================
+
+.. py:module:: ice_pick.metadata.descriptions.ddl
+
+

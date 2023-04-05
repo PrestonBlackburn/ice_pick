@@ -1,0 +1,6 @@
+:py:mod:`ice_pick.extras.wrapper`
+=================================
+
+.. py:module:: ice_pick.extras.wrapper
+
+

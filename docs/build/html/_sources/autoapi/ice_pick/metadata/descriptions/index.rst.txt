@@ -1,0 +1,16 @@
+:py:mod:`ice_pick.metadata.descriptions`
+========================================
+
+.. py:module:: ice_pick.metadata.descriptions
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   account/index.rst
+   ddl/index.rst
+
+

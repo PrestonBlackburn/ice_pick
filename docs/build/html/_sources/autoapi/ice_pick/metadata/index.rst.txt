@@ -1,0 +1,25 @@
+:py:mod:`ice_pick.metadata`
+===========================
+
+.. py:module:: ice_pick.metadata
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   descriptions/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   predictions/index.rst
+   stats/index.rst
+
+

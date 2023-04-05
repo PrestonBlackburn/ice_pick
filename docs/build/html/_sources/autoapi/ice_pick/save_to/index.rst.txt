@@ -1,0 +1,17 @@
+:py:mod:`ice_pick.save_to`
+==========================
+
+.. py:module:: ice_pick.save_to
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   snowflake/index.rst
+   sql/index.rst
+   tabular/index.rst
+
+

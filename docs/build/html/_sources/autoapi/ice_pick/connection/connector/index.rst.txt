@@ -1,0 +1,45 @@
+:py:mod:`ice_pick.connection.connector`
+=======================================
+
+.. py:module:: ice_pick.connection.connector
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   ice_pick.connection.connector.get_credentials
+   ice_pick.connection.connector.create_snowflake_connector
+
+
+
+.. py:function:: get_credentials(conf_path: str, section: str = 'DEFAULT') -> dict
+
+   Getting credentials with configparser
+
+   Parameters
+   ------------
+   conf_path
+       A string for the config path
+
+   section
+       The section of the .config file to use
+
+
+
+.. py:function:: create_snowflake_connector(conf_dict: dict) -> snowflake.connector
+
+   Initializing the connection to Snowflake
+
+   Parameters
+   ------------
+   conf_dict
+       a dictionary of the connection vairables to be passed to the snowflake connector
+       
+
+

@@ -1,0 +1,29 @@
+[build-system]
+# Minimum requirements for the build system to execute.
+requires = ["setuptools>=65.5.1", "wheel"]  # PEP 518 specifications.
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "snowflake_ice_pick"
+version = "0.0.1"
+
+
+[project.urls]
+
+
+
+[project.optional-dependencies]
+doc = [
+    "sphinx",
+    "myst-parser",
+    "furo",
+    "nbsphinx",
+    "ipykernel",
+    "IPython",
+
+]
+
+
+
+

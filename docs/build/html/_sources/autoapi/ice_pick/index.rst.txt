@@ -1,0 +1,27 @@
+:py:mod:`ice_pick`
+==================
+
+.. py:module:: ice_pick
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   connection/index.rst
+   extras/index.rst
+   metadata/index.rst
+   save_to/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   __main__/index.rst
+
+

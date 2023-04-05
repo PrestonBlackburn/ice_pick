@@ -1,0 +1,6 @@
+:py:mod:`ice_pick.metadata.stats`
+=================================
+
+.. py:module:: ice_pick.metadata.stats
+
+

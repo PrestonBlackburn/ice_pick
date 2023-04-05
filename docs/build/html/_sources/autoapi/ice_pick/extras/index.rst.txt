@@ -1,0 +1,16 @@
+:py:mod:`ice_pick.extras`
+=========================
+
+.. py:module:: ice_pick.extras
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   push/index.rst
+   wrapper/index.rst
+
+

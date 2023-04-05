@@ -1,0 +1,6 @@
+:py:mod:`ice_pick.__main__`
+===========================
+
+.. py:module:: ice_pick.__main__
+
+
