@@ -39,10 +39,13 @@ class SchemaObjectFilter:
     ignore_schemas:list = default_field(["INFORMATION_SCHEMA"]) # ex: ("SNOWFLAKE.*") # requires fully specified name
             
     
-    def _filter_schema_objects_helper(objects_df:pd.DataFrame,
+    def _filter_schema_objects_helper(
+                                      self,
+                                      objects_df:pd.DataFrame,
                                       filtered_dbs:str,
                                       filtered_schemas:str,
-                                      obj_type:str) -> pd.DataFrame:
+                                      obj_type:str
+                                      ) -> pd.DataFrame:
 
         # a helper function for filtering dataframe for objects
         filtered_dbs_str = '|'.join(filtered_dbs)
@@ -223,10 +226,11 @@ class SchemaObjectFilter:
 
 
         # Return Objects
-        all_objs_df = self._filter_schema_objects(self, 
+        all_objs_df = self._filter_schema_objects( 
                                                session,
                                                filtered_dbs,
-                                               filtered_schemas)
+                                               filtered_schemas
+                                               )
 
         # Construct the SchemaObject:
         #    database, schema, object_name, object_type

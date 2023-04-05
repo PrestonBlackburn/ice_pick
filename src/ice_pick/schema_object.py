@@ -92,8 +92,9 @@ class SchemaObject:
         # -- For SECRET
         #     USAGE
         
-        grant_sql = f"""grants {", ".join(privilege)} on {self.object_type} 
-                    "{self.database}"."{self.schema}"."{self.object_name}";"""
+        grant_sql = f"""grant {", ".join(privilege)} on {self.object_type} 
+                    "{self.database}"."{self.schema}"."{self.object_name}"
+                    to ROLE {grantee};"""
         grant_df = snowpark_query(session, grant_sql, non_select=True)
         
         grant_status_str = grant_df.iloc[0][0]
