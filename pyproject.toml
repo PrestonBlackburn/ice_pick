@@ -6,11 +6,35 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "snowflake_ice_pick"
+description = "Snowpark extension to cover additional objects and higher level functions"
 version = "0.0.1"
+readme = "README.md"
+authors = [{name = "Preston Blackburn"}]
+license = {file = "LICENSE"}
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Development Status :: 1 - Planning",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Utilities",
+]
+keywords = ["snowflake", "metadata", "utils"]
+
+requires-python = "~=3.8.0"
+
+dependencies = [
+    "pandas",
+    "snowflake-snowpark-python",
+    "setuptools>=40.6.0",
+    "wheel",
+    "cloudpickle>=1.6.0,<=2.0.0",
+]
+
 
 
 [project.urls]
-
+Homepage = "https://github.com/PrestonBlackburn/ice_pick"
 
 
 [project.optional-dependencies]
@@ -21,7 +45,6 @@ doc = [
     "nbsphinx",
     "ipykernel",
     "IPython",
-
 ]
 
 
