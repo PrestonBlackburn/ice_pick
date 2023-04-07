@@ -19,44 +19,46 @@ from ice_pick.utils import snowpark_query
 @dataclass
 class SchemaObject:
     # Schema Objects: Table, View, Stream, Stored Proc, File Format, UDF, etc..
+    session: Session
     database: str = "SNOWFLAKE"
     schema: str = ""
     object_name: str = ""
     object_type: str = ""
+    
 
     
     # Which functions should be a part of the class, and 
     # which should be outside teh class?
-    def get_ddl(self, session) -> str:
+    def get_ddl(self) -> str:
         
         ddl_sql = f"""select get_ddl('{self.object_type}',
                 '{self.database}.{self.schema}.{self.object_name}' );"""
-        ddl_df = snowpark_query(session, ddl_sql)
+        ddl_df = snowpark_query(self.session, ddl_sql)
         
         ddl_str = ddl_df.iloc[0][0]
         
         return ddl_str
 
 
-    def get_description(self, session) -> str:
+    def get_description(self) -> str:
         # (show description sql)\
         desc_sql = f"""describe {self.object_type} 
                     "{self.database}"."{self.schema}"."{self.object_name}";"""
-        desc_df = snowpark_query(session, desc_sql, non_select=True)
+        desc_df = snowpark_query(self.session, desc_sql, non_select=True)
         
         return desc_df
 
     
-    def get_grants_on(self, session) -> list:
+    def get_grants_on(self) -> list:
         # return list of objects
         grants_sql = f"""show grants on {self.object_type} 
                     "{self.database}"."{self.schema}"."{self.object_name}";"""
-        grants_df = snowpark_query(session, grants_sql, non_select=True)
+        grants_df = snowpark_query(self.session, grants_sql, non_select=True)
         
         return grants_df
     
     
-    def grant(self, privilege:list, grantee:str, session) -> str:
+    def grant(self, privilege:list, grantee:str) -> str:
         # grant access on object, return status
 
         # -- For TABLE
@@ -95,13 +97,13 @@ class SchemaObject:
         grant_sql = f"""grant {", ".join(privilege)} on {self.object_type} 
                     "{self.database}"."{self.schema}"."{self.object_name}"
                     to ROLE {grantee};"""
-        grant_df = snowpark_query(session, grant_sql, non_select=True)
+        grant_df = snowpark_query(self.session, grant_sql, non_select=True)
         
         grant_status_str = grant_df.iloc[0][0]
         
         return grant_status_str
     
-    def create(self, session, sql_ext:str = ""):
+    def create(self, sql_ext:str = ""):
         # create in snowflake if not exists
         # this is very dependant on objec type
         # usualy the additional stuff comes after the object name
@@ -111,7 +113,7 @@ class SchemaObject:
                        "{self.database}"."{self.schema}"."{self.object_name}"
                        {sql_ext}; """
         
-        create_df = snowpark_query(session, create_sql, non_select=True)
+        create_df = snowpark_query(self.session, create_sql, non_select=True)
         
         create_status_str = create_df.iloc[0][0]
         

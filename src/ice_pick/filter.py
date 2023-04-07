@@ -30,6 +30,7 @@ class SchemaObjectFilter:
     ".*" can be used to return all
     
     """
+    session: Session
     databases: list           # ex: [".*"]
     schemas: list             # ex: ["schema_*"]
     object_names: list       # ex: [".*"]
@@ -60,7 +61,6 @@ class SchemaObjectFilter:
 
 
     def _filter_schema_objects(self,
-                               session,
                                filtered_dbs:str,
                                filtered_schemas:str) -> pd.DataFrame:
         """
@@ -119,7 +119,7 @@ class SchemaObjectFilter:
         for obj_type in obj_type_filter:
 
             objects_sql = f""" show {obj_type} in account; """
-            objects_df = snowpark_query(session, objects_sql, non_select=True)
+            objects_df = snowpark_query(self.session, objects_sql, non_select=True)
 
             # g4t dfs to format: name, schema_name, database_name
             # need to filter based on name and type:
@@ -161,7 +161,7 @@ class SchemaObjectFilter:
 
 
 
-    def return_schema_objects(self, session) -> List[SchemaObject]:
+    def return_schema_objects(self) -> List[SchemaObject]:
         """
         Filter objects based on input objects
         If the property is a wildcard ".*", then search all objects at that level
@@ -204,7 +204,7 @@ class SchemaObjectFilter:
 
         # Return Databases
         dbs_sql = f""" show databases in account; """
-        dbs_df = snowpark_query(session, dbs_sql, non_select=True)
+        dbs_df = snowpark_query(self.session, dbs_sql, non_select=True)
 
         db_select_filter_df = dbs_df[dbs_df['name'].str.contains(db_select_str)]
         db_ignore_filter_df = db_select_filter_df[~db_select_filter_df['name'].str.contains(db_ignore_str)]
@@ -215,7 +215,7 @@ class SchemaObjectFilter:
 
         # Return Schemas
         schemas_sql = f""" show schemas in account; """
-        schemas_df = snowpark_query(session, schemas_sql, non_select=True)
+        schemas_df = snowpark_query(self.session, schemas_sql, non_select=True)
 
         filtered_dbs_str = '|'.join(filtered_dbs)
         db_filtered_schemas_df = schemas_df[schemas_df['database_name'].str.contains(filtered_dbs_str)]
@@ -226,8 +226,7 @@ class SchemaObjectFilter:
 
 
         # Return Objects
-        all_objs_df = self._filter_schema_objects( 
-                                               session,
+        all_objs_df = self._filter_schema_objects(
                                                filtered_dbs,
                                                filtered_schemas
                                                )
@@ -235,7 +234,7 @@ class SchemaObjectFilter:
         # Construct the SchemaObject:
         #    database, schema, object_name, object_type
 
-        schema_object_series = all_objs_df.apply(lambda x: SchemaObject(x["database_name"], x["schema_name"], x["name"], x["object_type"]), axis=1)
+        schema_object_series = all_objs_df.apply(lambda x: SchemaObject(self.session, x["database_name"], x["schema_name"], x["name"], x["object_type"]), axis=1)
 
         schema_object_list = schema_object_series.tolist()
 
