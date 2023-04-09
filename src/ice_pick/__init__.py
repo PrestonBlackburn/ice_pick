@@ -11,7 +11,8 @@ Contains core classes of Ice Pick
 __all__ = [
     "SchemaObject",
     "SchemaObjectFilter",
-    "extend_session"
+    "extend_session",
+    "auto_union_standalone"
 ]
 
 
@@ -23,4 +24,5 @@ __version__ = ".".join(str(x) for x in VERSION if x is not None)
 from ice_pick.schema_object import SchemaObject
 from ice_pick.filter import SchemaObjectFilter
 from ice_pick.extension import extend_session
+from ice_pick.utils import auto_union_standalone
 

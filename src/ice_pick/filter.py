@@ -15,19 +15,40 @@ from ice_pick.utils import snowpark_query
 from ice_pick.schema_object import SchemaObject
 
 
-def default_field(obj):
+def _default_field(obj):
     return field(default_factory=lambda: copy.deepcopy(obj))
 
 
 @dataclass
 class SchemaObjectFilter:
     """
-    Apply selection first, then filter out ingore objects.
+    A filter that can be used to return multiple SchemaObjects
+
+    Apply selection first, then filter out ingore objects.  
     
     Filters are applied by:
-        database -> ignore_dbs -> schema -> ignore_schemas -> object type -> object name  
+        database -> ignore_dbs -> schema -> ignore_schemas -> object type -> object name    
         
-    ".*" can be used to return all
+    ".*" can be used to return all (regex supported)
+
+    Attributes
+    ----------
+    session: Session
+        Snowpark Session
+    databases: list
+        databases that wil be searched
+    schemas: list
+        schemas that wil be searched
+    object_names: list
+        the name of the objects to be searched for
+    object_types: list
+        the type of schema objects to be searched for
+    ignore_dbs: list
+        databases to be ignored in search
+    ignore_schemas: list
+        schemas to be ignored in search
+    
+
     
     """
     session: Session
@@ -36,8 +57,8 @@ class SchemaObjectFilter:
     object_names: list       # ex: [".*"]
     object_types: list       # ex: [".*"]
     
-    ignore_dbs:list = default_field(["SNOWFLAKE_SAMPLE_DATA", "SNOWFLAKE"])    # ex: ("SNOWFLAKE", "SNOWFLAKE_*")
-    ignore_schemas:list = default_field(["INFORMATION_SCHEMA"]) # ex: ("SNOWFLAKE.*") # requires fully specified name
+    ignore_dbs:list = _default_field(["SNOWFLAKE_SAMPLE_DATA", "SNOWFLAKE"])    # ex: ("SNOWFLAKE", "SNOWFLAKE_*")
+    ignore_schemas:list = _default_field(["INFORMATION_SCHEMA"]) # ex: ("SNOWFLAKE.*") # requires fully specified name
             
     
     def _filter_schema_objects_helper(
@@ -48,7 +69,9 @@ class SchemaObjectFilter:
                                       obj_type:str
                                       ) -> pd.DataFrame:
 
-        # a helper function for filtering dataframe for objects
+        """ 
+        a helper function for filtering dataframe for objects
+        """
         filtered_dbs_str = '|'.join(filtered_dbs)
         obj_filtered_db_df = objects_df[objects_df['database_name'].str.contains(filtered_dbs_str)]
 
@@ -169,23 +192,29 @@ class SchemaObjectFilter:
 
         If exclude is set to true, everything matched will be ignored, and all non-matches are returned
 
-        Inputs (on init): 
-            schema_filter : List[SchemaObject]
-            session: session
-            exclude: bool = False
+        Parameters
+        ----------
+        None : 
+             
 
-        example:
-            Get all procedures in all databases:
-                SchemaObjectFilter([".*"], [".*"], [".*"], ["procedure"])
+        Returns
+        -------
+        List[SchemaObjects]
+            a list of schema objects that matched the filter cases
 
-            Get all tables and vies in a single database:
-                SchemaObjectFilter(["TEST_DB"], [".*"], [".*"], ["table", "view"])
+        Example
+        -------
+        Get all procedures in all databases:  
+        >> SchemaObjectFilter([".*"], [".*"], [".*"], ["procedure"])
 
-            Get all tables except for the sample tables:
-                SchemaObjectFilter([".*"], [".*"],[".*"], ["table"], ingore_dbs = ["SNOWFLAKE", "SNOWFLAKE_SAMPLE_DATA"]
+        Get all tables and vies in a single database:  
+        >> SchemaObjectFilter(["TEST_DB"], [".*"], [".*"], ["table", "view"])
 
-            Get specific tables:
-                SchemaObjectFilter(["snowflake"], ["sample_data"], ["customer", "transactions"], ["table"])
+        Get all tables except for the sample tables:  
+        >> SchemaObjectFilter([".*"], [".*"],[".*"], ["table"], ingore_dbs = ["SNOWFLAKE", "SNOWFLAKE_SAMPLE_DATA"]
+
+        Get specific tables:  
+        >> SchemaObjectFilter(["snowflake"], ["sample_data"], ["customer", "transactions"], ["table"])
 
         """
 

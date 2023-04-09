@@ -3,17 +3,10 @@
 
 .. py:module:: ice_pick
 
+.. autoapi-nested-parse::
 
-Subpackages
------------
-.. toctree::
-   :titlesonly:
-   :maxdepth: 3
+   Contains core classes of Ice Pick
 
-   connection/index.rst
-   extras/index.rst
-   metadata/index.rst
-   save_to/index.rst
 
 
 Submodules
@@ -22,6 +15,334 @@ Submodules
    :titlesonly:
    :maxdepth: 1
 
-   __main__/index.rst
+   account_object/index.rst
+   extension/index.rst
+   filter/index.rst
+   schema_object/index.rst
+   utils/index.rst
+   version/index.rst
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   ice_pick.SchemaObject
+   ice_pick.SchemaObjectFilter
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   ice_pick.extend_session
+   ice_pick.auto_union_standalone
+
+
+
+.. py:class:: SchemaObject
+
+   Represents a Snowflake Schema object.
+
+   Schema Objects Include: ALERTS, EXTERNAL FUNCTIONS, EXTERNAL TABLES, FILE FORMATS,
+   MATERIALIZED VIEWS, MASKING POLICIES, PASSWORD POLICIES, PIPES, PROCEDURES,
+   ROW ACCESS POLICIES, SECRETS, SESSION POLICIES, SEQUENCES, STAGES, STREAMS,
+   TABLES, TAGS, TASKS, USER FUNCTIONS,  VIEWS, *EXTERNAL FUNCTIONS,
+    *PROCEDURES, *USER FUNCTIONS
+
+   Attributes
+   ----------
+   session: Session
+       Snowpark Session
+   database: str
+       database that the object is in
+   schema: str
+       schema that the object is in
+   object_name: str
+       the name of the object
+   object_type: str
+       the type of schema object
+       
+
+
+   .. py:attribute:: session
+      :type: snowflake.snowpark.Session
+
+      
+
+   .. py:attribute:: database
+      :type: str
+      :value: 'SNOWFLAKE'
+
+      
+
+   .. py:attribute:: schema
+      :type: str
+      :value: ''
+
+      
+
+   .. py:attribute:: object_name
+      :type: str
+      :value: ''
+
+      
+
+   .. py:attribute:: object_type
+      :type: str
+      :value: ''
+
+      
+
+   .. py:method:: get_ddl() -> str
+
+      Return the ddl of the schema object as a string
+
+
+   .. py:method:: get_description() -> str
+
+      Return the description of the schema object as a string
+
+
+   .. py:method:: get_grants_on() -> list
+
+      Return a list of grants on the schema object as a list
+
+
+   .. py:method:: grant(privilege: list, grantee: str) -> str
+
+      grant access on object, return status
+
+      # -- For TABLE  
+      #   { SELECT | INSERT | UPDATE | DELETE | TRUNCATE | REFERENCES } [ , ... ]  
+      # -- For VIEW  
+      #   { SELECT | REFERENCES } [ , ... ]  
+      # -- For MATERIALIZED VIEW  
+      #   { SELECT | REFERENCES } [ , ... ]  
+      # -- For SEQUENCE, FUNCTION (UDF or external function), PROCEDURE, or FILE FORMAT  
+      #     USAGE  
+      # -- For internal STAGE  
+      #     READ [ , WRITE ]  
+      # -- For external STAGE  
+      #     USAGE  
+      # -- For PIPE  
+      #    { MONITOR | OPERATE } [ , ... ]  
+      # -- For STREAM  
+      #     SELECT  
+      # -- For TASK  
+      #    { MONITOR | OPERATE } [ , ... ]  
+      # -- For MASKING POLICY  
+      #     APPLY  
+      # -- For PASSWORD POLICY  
+      #      APPLY  
+      # -- For ROW ACCESS POLICY  
+      #     APPLY  
+      # -- For SESSION POLICY  
+      #     APPLY  
+      # -- For TAG  
+      #     APPLY  
+      # -- For ALERT  
+      #     OPERATE  
+      # -- For SECRET  
+      #     USAGE  
+
+
+
+   .. py:method:: create(sql_ext: str = '')
+
+      create in snowflake if not exists. For now this is very dependant on object type. 
+      Usualy the additional stuff comes after the object name, which can be provided by the sql_ext param. 
+      (todo: sql ext could just make more confusing - maybe need to create specific extension objects)
+
+
+
+.. py:class:: SchemaObjectFilter
+
+   A filter that can be used to return multiple SchemaObjects
+
+   Apply selection first, then filter out ingore objects.  
+
+   Filters are applied by:
+       database -> ignore_dbs -> schema -> ignore_schemas -> object type -> object name    
+       
+   ".*" can be used to return all (regex supported)
+
+   Attributes
+   ----------
+   session: Session
+       Snowpark Session
+   databases: list
+       databases that wil be searched
+   schemas: list
+       schemas that wil be searched
+   object_names: list
+       the name of the objects to be searched for
+   object_types: list
+       the type of schema objects to be searched for
+   ignore_dbs: list
+       databases to be ignored in search
+   ignore_schemas: list
+       schemas to be ignored in search
+
+
+
+
+   .. py:attribute:: session
+      :type: snowflake.snowpark.Session
+
+      
+
+   .. py:attribute:: databases
+      :type: list
+
+      
+
+   .. py:attribute:: schemas
+      :type: list
+
+      
+
+   .. py:attribute:: object_names
+      :type: list
+
+      
+
+   .. py:attribute:: object_types
+      :type: list
+
+      
+
+   .. py:attribute:: ignore_dbs
+      :type: list
+
+      
+
+   .. py:attribute:: ignore_schemas
+      :type: list
+
+      
+
+   .. py:method:: _filter_schema_objects_helper(objects_df: pandas.DataFrame, filtered_dbs: str, filtered_schemas: str, obj_type: str) -> pandas.DataFrame
+
+      a helper function for filtering dataframe for objects
+
+
+   .. py:method:: _filter_schema_objects(filtered_dbs: str, filtered_schemas: str) -> pandas.DataFrame
+
+      helper function to get all schema level object info
+       - get the object types that are selected
+       - get the object info (database, schema, object type, object name)
+       - The object info returned depends on the selected object types (see schema_level_exceptions)
+
+
+
+
+   .. py:method:: return_schema_objects() -> List[ice_pick.schema_object.SchemaObject]
+
+      Filter objects based on input objects
+      If the property is a wildcard ".*", then search all objects at that level
+      (inputs are passed as regex)
+
+      If exclude is set to true, everything matched will be ignored, and all non-matches are returned
+
+      Parameters
+      ----------
+      None : 
+           
+
+      Returns
+      -------
+      List[SchemaObjects]
+          a list of schema objects that matched the filter cases
+
+      Example
+      -------
+      Get all procedures in all databases:  
+      >> SchemaObjectFilter([".*"], [".*"], [".*"], ["procedure"])
+
+      Get all tables and vies in a single database:  
+      >> SchemaObjectFilter(["TEST_DB"], [".*"], [".*"], ["table", "view"])
+
+      Get all tables except for the sample tables:  
+      >> SchemaObjectFilter([".*"], [".*"],[".*"], ["table"], ingore_dbs = ["SNOWFLAKE", "SNOWFLAKE_SAMPLE_DATA"]
+
+      Get specific tables:  
+      >> SchemaObjectFilter(["snowflake"], ["sample_data"], ["customer", "transactions"], ["table"])
+
+
+
+
+.. py:function:: extend_session(Session: extend_session.Session) -> extend_session.Session
+
+   Returns the extended Session class
+
+   Parameters
+   ----------
+   session : Session
+       Snowpark Session
+
+   Returns
+   -------
+   Session
+       The exteneded Snowpark Session
+
+   Example
+   -------
+   >> session = extend_session(Session).builder.configs(connection_parameters).create()
+
+
+.. py:function:: auto_union_standalone(session: snowflake.snowpark.Session, union_dfs: list) -> snowflake.snowpark.DataFrame
+
+   Returns a unioned dataframe from the input list of dataframes based on column names. 
+   Primarly to handle cases where the number of columns do not match, 
+   which is not suppored by the base union function.
+   If columns do not match, non-matching columns are added with null values to the base dataframes.
+
+   Parameters
+   ----------
+   session : Session
+       session object
+   union_dfs : list
+       A list of the input snowpark dataframes to union
+
+   Returns
+   -------
+   snowpark.DataFrame
+       A snowpark dataframe with the unioned input dataframes
+
+   Example
+   -------
+       >> schema_1 = StructType([StructField("a", IntegerType()), StructField("b", StringType())])  
+       >> schema_2 = StructType([StructField("a", FloatType()), StructField("c", StringType())])  
+       >> schema_3 = StructType([StructField("a", IntegerType()), StructField("c", StringType())])  
+       >> schema_4 = StructType([StructField("c", StringType()), StructField("d", StringType())])  
+
+       >> df_1 = session.create_dataframe([[1, "snow"], [3, "flake"]], schema_1)  
+       >> df_2 = session.create_dataframe([[2.0, "ice"], [4.0, "pick"]], schema_2)  
+       >> df_3 = session.create_dataframe([[6, "test_1"], [7, "test_2"]], schema_3)  
+       >> df_4 = session.create_dataframe([["testing_d", "testing_f"], ["testing_g", "testing_h"]], schema_4)  
+
+       >> union_dfs = [df_1, df_2, df_3, df_4]  
+       >> unioned_df = auto_union(session, union_dfs)  
+       >> unioned_df.show()  
+       ----------------------------------------  
+       |"A"   |"B"    |"C"        |"D"        |  
+       ----------------------------------------  
+       |1.0   |snow   |NULL       |NULL       |  
+       |3.0   |flake  |NULL       |NULL       |  
+       |2.0   |NULL   |ice        |NULL       |  
+       |4.0   |NULL   |pick       |NULL       |  
+       |6.0   |NULL   |test_1     |NULL       |  
+       |7.0   |NULL   |test_2     |NULL       |  
+       |NULL  |NULL   |testing_d  |testing_f  |  
+       |NULL  |NULL   |testing_g  |testing_h  |  
+       ----------------------------------------  
+
 
 

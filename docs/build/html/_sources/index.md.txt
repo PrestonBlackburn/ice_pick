@@ -14,16 +14,15 @@ Read installation instructions in {ref}`Installation`.
 This library is still in the concept stage.
 ```
 
+## Contents
 ```{toctree}
-:caption: 'Contents:'
 :maxdepth: 2
 
 usage
 notebooks/tutorial
 ```
 
-# Indices and tables
 
-- {ref}`genindex`
-- {ref}`modindex`
-- {ref}`search`
+
+<!-- - {ref}`genindex`
+- {ref}`modindex` -->
