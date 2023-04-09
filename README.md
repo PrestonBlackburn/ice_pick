@@ -25,8 +25,10 @@ python -m pip install -e .
 ```
 
 ### create a snowpark session
+Ice pick extends the session to add the additional functionality
 ```python
 from snowflake.snowpark import Session
+from ice_pick import extend_session
 
 connection_parameters = {
   "account": "<your snowflake account>",
@@ -38,26 +40,26 @@ connection_parameters = {
   "schema": "<snowflake schema>"
 }
 
-session = Session.builder.configs(connection_parameters).create()
+session = extend_session(Session).builder.configs(connection_parameters).create()
 ```
 ## Example Usage
 ### Return the ddl, description, and grants for a schema object 
 ```python
 from ice_pick import SchemaObject
 
-obj = SchemaObject('TEST', 'SCHEMA_1', 'CUSTOMER', 'TABLE')
+table_obj = session.create_schema_object('TEST', 'SCHEMA_1', 'CUSTOMER', 'TABLE')
 
 # Get the ddl for the specified object
-ddl = obj.get_ddl(session)
+ddl = table_obj.get_ddl()
 
 # Get the description of the object
-description = obj.get_description(session)
+description = table_obj.get_description()
 
 # Get the grants on the object
-grants_on = obj.get_grants_on(session)
+grants_on = table_obj.get_grants_on()
 
 # Grant the object to a role with permissions specified in a list
-grant = obj.grant(["SELECT"], "PUBLIC", session)
+grant = table_obj.grant(["SELECT"], "PUBLIC")
 ```
 
 
@@ -66,7 +68,7 @@ grant = obj.grant(["SELECT"], "PUBLIC", session)
 from ice_pick import SchemaObject, SchemaObjectFilter
 
 # create the fitler, where "*" are wildcards (regex supported)
-obj_filter = SchemaObjectFilter(
+obj_filter = session.create_schema_object_filter(
                 ["TEST", "TEST_*"],        # databases
                 [".*"],                    # schemas
                 [".*"],                    # object names
@@ -74,9 +76,9 @@ obj_filter = SchemaObjectFilter(
             )
 
 # return the schema objects based on the filter
-schema_object_list = sp_filter.return_schema_objects(session)
+schema_object_list = sp_filter.return_schema_objects()
 
 # Get the ddl for the returned schema objects
-ddl_list = [schema_obj.get_ddl(session) for schema_obj in schema_object_list]
+ddl_list = [schema_obj.get_ddl() for schema_obj in schema_object_list]
 ```
 

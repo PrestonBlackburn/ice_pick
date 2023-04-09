@@ -15,28 +15,50 @@ from ice_pick.utils import snowpark_query
 from ice_pick.schema_object import SchemaObject
 
 
-def default_field(obj):
+def _default_field(obj):
     return field(default_factory=lambda: copy.deepcopy(obj))
 
 
 @dataclass
 class SchemaObjectFilter:
     """
-    Apply selection first, then filter out ingore objects.
+    A filter that can be used to return multiple SchemaObjects
+
+    Apply selection first, then filter out ingore objects.  
     
     Filters are applied by:
-        database -> ignore_dbs -> schema -> ignore_schemas -> object type -> object name  
+        database -> ignore_dbs -> schema -> ignore_schemas -> object type -> object name    
         
-    ".*" can be used to return all
+    ".*" can be used to return all (regex supported)
+
+    Attributes
+    ----------
+    session: Session
+        Snowpark Session
+    databases: list
+        databases that wil be searched
+    schemas: list
+        schemas that wil be searched
+    object_names: list
+        the name of the objects to be searched for
+    object_types: list
+        the type of schema objects to be searched for
+    ignore_dbs: list
+        databases to be ignored in search
+    ignore_schemas: list
+        schemas to be ignored in search
+    
+
     
     """
+    session: Session
     databases: list           # ex: [".*"]
     schemas: list             # ex: ["schema_*"]
     object_names: list       # ex: [".*"]
     object_types: list       # ex: [".*"]
     
-    ignore_dbs:list = default_field(["SNOWFLAKE_SAMPLE_DATA", "SNOWFLAKE"])    # ex: ("SNOWFLAKE", "SNOWFLAKE_*")
-    ignore_schemas:list = default_field(["INFORMATION_SCHEMA"]) # ex: ("SNOWFLAKE.*") # requires fully specified name
+    ignore_dbs:list = _default_field(["SNOWFLAKE_SAMPLE_DATA", "SNOWFLAKE"])    # ex: ("SNOWFLAKE", "SNOWFLAKE_*")
+    ignore_schemas:list = _default_field(["INFORMATION_SCHEMA"]) # ex: ("SNOWFLAKE.*") # requires fully specified name
             
     
     def _filter_schema_objects_helper(
@@ -47,7 +69,9 @@ class SchemaObjectFilter:
                                       obj_type:str
                                       ) -> pd.DataFrame:
 
-        # a helper function for filtering dataframe for objects
+        """ 
+        a helper function for filtering dataframe for objects
+        """
         filtered_dbs_str = '|'.join(filtered_dbs)
         obj_filtered_db_df = objects_df[objects_df['database_name'].str.contains(filtered_dbs_str)]
 
@@ -60,7 +84,6 @@ class SchemaObjectFilter:
 
 
     def _filter_schema_objects(self,
-                               session,
                                filtered_dbs:str,
                                filtered_schemas:str) -> pd.DataFrame:
         """
@@ -119,7 +142,7 @@ class SchemaObjectFilter:
         for obj_type in obj_type_filter:
 
             objects_sql = f""" show {obj_type} in account; """
-            objects_df = snowpark_query(session, objects_sql, non_select=True)
+            objects_df = snowpark_query(self.session, objects_sql, non_select=True)
 
             # g4t dfs to format: name, schema_name, database_name
             # need to filter based on name and type:
@@ -161,7 +184,7 @@ class SchemaObjectFilter:
 
 
 
-    def return_schema_objects(self, session) -> List[SchemaObject]:
+    def return_schema_objects(self) -> List[SchemaObject]:
         """
         Filter objects based on input objects
         If the property is a wildcard ".*", then search all objects at that level
@@ -169,23 +192,29 @@ class SchemaObjectFilter:
 
         If exclude is set to true, everything matched will be ignored, and all non-matches are returned
 
-        Inputs (on init): 
-            schema_filter : List[SchemaObject]
-            session: session
-            exclude: bool = False
+        Parameters
+        ----------
+        None : 
+             
 
-        example:
-            Get all procedures in all databases:
-                SchemaObjectFilter([".*"], [".*"], [".*"], ["procedure"])
+        Returns
+        -------
+        List[SchemaObjects]
+            a list of schema objects that matched the filter cases
 
-            Get all tables and vies in a single database:
-                SchemaObjectFilter(["TEST_DB"], [".*"], [".*"], ["table", "view"])
+        Example
+        -------
+        Get all procedures in all databases:  
+        >> SchemaObjectFilter([".*"], [".*"], [".*"], ["procedure"])
 
-            Get all tables except for the sample tables:
-                SchemaObjectFilter([".*"], [".*"],[".*"], ["table"], ingore_dbs = ["SNOWFLAKE", "SNOWFLAKE_SAMPLE_DATA"]
+        Get all tables and vies in a single database:  
+        >> SchemaObjectFilter(["TEST_DB"], [".*"], [".*"], ["table", "view"])
 
-            Get specific tables:
-                SchemaObjectFilter(["snowflake"], ["sample_data"], ["customer", "transactions"], ["table"])
+        Get all tables except for the sample tables:  
+        >> SchemaObjectFilter([".*"], [".*"],[".*"], ["table"], ingore_dbs = ["SNOWFLAKE", "SNOWFLAKE_SAMPLE_DATA"]
+
+        Get specific tables:  
+        >> SchemaObjectFilter(["snowflake"], ["sample_data"], ["customer", "transactions"], ["table"])
 
         """
 
@@ -204,7 +233,7 @@ class SchemaObjectFilter:
 
         # Return Databases
         dbs_sql = f""" show databases in account; """
-        dbs_df = snowpark_query(session, dbs_sql, non_select=True)
+        dbs_df = snowpark_query(self.session, dbs_sql, non_select=True)
 
         db_select_filter_df = dbs_df[dbs_df['name'].str.contains(db_select_str)]
         db_ignore_filter_df = db_select_filter_df[~db_select_filter_df['name'].str.contains(db_ignore_str)]
@@ -215,7 +244,7 @@ class SchemaObjectFilter:
 
         # Return Schemas
         schemas_sql = f""" show schemas in account; """
-        schemas_df = snowpark_query(session, schemas_sql, non_select=True)
+        schemas_df = snowpark_query(self.session, schemas_sql, non_select=True)
 
         filtered_dbs_str = '|'.join(filtered_dbs)
         db_filtered_schemas_df = schemas_df[schemas_df['database_name'].str.contains(filtered_dbs_str)]
@@ -226,8 +255,7 @@ class SchemaObjectFilter:
 
 
         # Return Objects
-        all_objs_df = self._filter_schema_objects( 
-                                               session,
+        all_objs_df = self._filter_schema_objects(
                                                filtered_dbs,
                                                filtered_schemas
                                                )
@@ -235,7 +263,7 @@ class SchemaObjectFilter:
         # Construct the SchemaObject:
         #    database, schema, object_name, object_type
 
-        schema_object_series = all_objs_df.apply(lambda x: SchemaObject(x["database_name"], x["schema_name"], x["name"], x["object_type"]), axis=1)
+        schema_object_series = all_objs_df.apply(lambda x: SchemaObject(self.session, x["database_name"], x["schema_name"], x["name"], x["object_type"]), axis=1)
 
         schema_object_list = schema_object_series.tolist()
 
