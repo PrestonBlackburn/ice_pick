@@ -87,7 +87,6 @@ class SchemaObjectFilter:
                                filtered_dbs:str,
                                filtered_schemas:str) -> pd.DataFrame:
         """
-
         helper function to get all schema level object info
          - get the object types that are selected
          - get the object info (database, schema, object type, object name)
@@ -204,17 +203,17 @@ class SchemaObjectFilter:
 
         Example
         -------
-        Get all procedures in all databases:  
-        >> SchemaObjectFilter([".*"], [".*"], [".*"], ["procedure"])
+        | Get all procedures in all databases:  
+        | >> SchemaObjectFilter([".*"], [".*"], [".*"], ["procedure"])
 
-        Get all tables and vies in a single database:  
-        >> SchemaObjectFilter(["TEST_DB"], [".*"], [".*"], ["table", "view"])
+        | Get all tables and vies in a single database:  
+        | >> SchemaObjectFilter(["TEST_DB"], [".*"], [".*"], ["table", "view"])
 
-        Get all tables except for the sample tables:  
-        >> SchemaObjectFilter([".*"], [".*"],[".*"], ["table"], ingore_dbs = ["SNOWFLAKE", "SNOWFLAKE_SAMPLE_DATA"]
+        | Get all tables except for the sample tables:  
+        | >> SchemaObjectFilter([".*"], [".*"],[".*"], ["table"], ingore_dbs = ["SNOWFLAKE", "SNOWFLAKE_SAMPLE_DATA"]
 
-        Get specific tables:  
-        >> SchemaObjectFilter(["snowflake"], ["sample_data"], ["customer", "transactions"], ["table"])
+        | Get specific tables:  
+        | >> SchemaObjectFilter(["snowflake"], ["sample_data"], ["customer", "transactions"], ["table"])
 
         """
 

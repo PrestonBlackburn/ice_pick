@@ -1,7 +1,7 @@
-![ice pick logo](./docs/img/ice_pick_logo_mountain.png)
+![ice pick logo](https://github.com/PrestonBlackburn/ice_pick/blob/main/docs/img/ice_pick_logo_mountain.png?raw=true)
 
 # Ice Pick
-
+[![PyPI Latest Release](https://img.shields.io/pypi/v/snowflake-ice-pick.svg)](https://pypi.org/project/snowflake-ice-pick/)
 
 **Ice Pick** is a Python package that provides utilities for common operations done on a Snowflake warehouse. Operations range from getting Snowflake object ddl, getting table statistics, and returning account level information.
 
@@ -18,11 +18,15 @@ The `SchemaObjectFilter` allows you to quickly return and inspect many schema ob
 
 
 ## Getting Started
-(before pushed to pypi)
+
+### Read the docs: https://ice-pick.readthedocs.io/en/latest/
+
+<br/>
+<br/>
 
 ### install the library
 ```bash
-python -m pip install -e .
+python -m pip install snowflake-ice-pick
 ```
 
 ### create a snowpark session

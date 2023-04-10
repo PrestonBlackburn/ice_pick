@@ -38,7 +38,7 @@ class SchemaObject:
         the name of the object
     object_type: str
         the type of schema object
-        
+
 
     """
     # Schema Objects: Table, View, Stream, Stored Proc, File Format, UDF, etc..
@@ -90,38 +90,38 @@ class SchemaObject:
     def grant(self, privilege:list, grantee:str) -> str:
         """ grant access on object, return status
 
-        # -- For TABLE  
-        #   { SELECT | INSERT | UPDATE | DELETE | TRUNCATE | REFERENCES } [ , ... ]  
-        # -- For VIEW  
-        #   { SELECT | REFERENCES } [ , ... ]  
-        # -- For MATERIALIZED VIEW  
-        #   { SELECT | REFERENCES } [ , ... ]  
-        # -- For SEQUENCE, FUNCTION (UDF or external function), PROCEDURE, or FILE FORMAT  
-        #     USAGE  
-        # -- For internal STAGE  
-        #     READ [ , WRITE ]  
-        # -- For external STAGE  
-        #     USAGE  
-        # -- For PIPE  
-        #    { MONITOR | OPERATE } [ , ... ]  
-        # -- For STREAM  
-        #     SELECT  
-        # -- For TASK  
-        #    { MONITOR | OPERATE } [ , ... ]  
-        # -- For MASKING POLICY  
-        #     APPLY  
-        # -- For PASSWORD POLICY  
-        #      APPLY  
-        # -- For ROW ACCESS POLICY  
-        #     APPLY  
-        # -- For SESSION POLICY  
-        #     APPLY  
-        # -- For TAG  
-        #     APPLY  
-        # -- For ALERT  
-        #     OPERATE  
-        # -- For SECRET  
-        #     USAGE  
+        | -- For TABLE  
+        |   { SELECT | INSERT | UPDATE | DELETE | TRUNCATE | REFERENCES } [ , ... ]  
+        | -- For VIEW  
+        |   { SELECT | REFERENCES } [ , ... ]  
+        | -- For MATERIALIZED VIEW  
+        |   { SELECT | REFERENCES } [ , ... ]  
+        | -- For SEQUENCE, FUNCTION (UDF or external function), PROCEDURE, or FILE FORMAT  
+        |     USAGE  
+        | -- For internal STAGE  
+        |     READ [ , WRITE ]  
+        | -- For external STAGE  
+        |     USAGE  
+        | -- For PIPE  
+        |    { MONITOR | OPERATE } [ , ... ]  
+        | -- For STREAM  
+        |     SELECT  
+        | -- For TASK  
+        |    { MONITOR | OPERATE } [ , ... ]  
+        | -- For MASKING POLICY  
+        |     APPLY  
+        | -- For PASSWORD POLICY  
+        |      APPLY  
+        | -- For ROW ACCESS POLICY  
+        |     APPLY  
+        | -- For SESSION POLICY  
+        |     APPLY  
+        | -- For TAG  
+        |     APPLY  
+        | -- For ALERT  
+        |     OPERATE  
+        | -- For SECRET  
+        |     USAGE  
 
         """
 

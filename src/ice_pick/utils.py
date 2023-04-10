@@ -144,31 +144,31 @@ def auto_union_standalone(session:Session, union_dfs:list) -> snowpark.DataFrame
     
     Example
     -------
-        >> schema_1 = StructType([StructField("a", IntegerType()), StructField("b", StringType())])  
-        >> schema_2 = StructType([StructField("a", FloatType()), StructField("c", StringType())])  
-        >> schema_3 = StructType([StructField("a", IntegerType()), StructField("c", StringType())])  
-        >> schema_4 = StructType([StructField("c", StringType()), StructField("d", StringType())])  
+        | >> schema_1 = StructType([StructField("a", IntegerType()), StructField("b", StringType())])  
+        | >> schema_2 = StructType([StructField("a", FloatType()), StructField("c", StringType())])  
+        | >> schema_3 = StructType([StructField("a", IntegerType()), StructField("c", StringType())])  
+        | >> schema_4 = StructType([StructField("c", StringType()), StructField("d", StringType())])  
 
-        >> df_1 = session.create_dataframe([[1, "snow"], [3, "flake"]], schema_1)  
-        >> df_2 = session.create_dataframe([[2.0, "ice"], [4.0, "pick"]], schema_2)  
-        >> df_3 = session.create_dataframe([[6, "test_1"], [7, "test_2"]], schema_3)  
-        >> df_4 = session.create_dataframe([["testing_d", "testing_f"], ["testing_g", "testing_h"]], schema_4)  
+        | >> df_1 = session.create_dataframe([[1, "snow"], [3, "flake"]], schema_1)  
+        | >> df_2 = session.create_dataframe([[2.0, "ice"], [4.0, "pick"]], schema_2)  
+        | >> df_3 = session.create_dataframe([[6, "test_1"], [7, "test_2"]], schema_3)  
+        | >> df_4 = session.create_dataframe([["testing_d", "testing_f"], ["testing_g", "testing_h"]], schema_4)  
 
-        >> union_dfs = [df_1, df_2, df_3, df_4]  
-        >> unioned_df = auto_union(session, union_dfs)  
-        >> unioned_df.show()  
-        ----------------------------------------  
-        |"A"   |"B"    |"C"        |"D"        |  
-        ----------------------------------------  
-        |1.0   |snow   |NULL       |NULL       |  
-        |3.0   |flake  |NULL       |NULL       |  
-        |2.0   |NULL   |ice        |NULL       |  
-        |4.0   |NULL   |pick       |NULL       |  
-        |6.0   |NULL   |test_1     |NULL       |  
-        |7.0   |NULL   |test_2     |NULL       |  
-        |NULL  |NULL   |testing_d  |testing_f  |  
-        |NULL  |NULL   |testing_g  |testing_h  |  
-        ----------------------------------------  
+        | >> union_dfs = [df_1, df_2, df_3, df_4]  
+        | >> unioned_df = auto_union(session, union_dfs)  
+        | >> unioned_df.show()  
+        | ----------------------------------------  
+        | |"A"   |"B"    |"C"        |"D"        |  
+        | ----------------------------------------  
+        | |1.0   |snow   |NULL       |NULL       |  
+        | |3.0   |flake  |NULL       |NULL       |  
+        | |2.0   |NULL   |ice        |NULL       |  
+        | |4.0   |NULL   |pick       |NULL       |  
+        | |6.0   |NULL   |test_1     |NULL       |  
+        | |7.0   |NULL   |test_2     |NULL       |  
+        | |NULL  |NULL   |testing_d  |testing_f  |  
+        | |NULL  |NULL   |testing_g  |testing_h  |  
+        | ----------------------------------------  
     
     """
     
