@@ -56,20 +56,35 @@ Functions
    TABLES, TAGS, TASKS, USER FUNCTIONS,  VIEWS, *EXTERNAL FUNCTIONS,
     *PROCEDURES, *USER FUNCTIONS
 
-   Attributes
-   ----------
-   session: Session
-       Snowpark Session
-   database: str
-       database that the object is in
-   schema: str
-       schema that the object is in
-   object_name: str
-       the name of the object
-   object_type: str
-       the type of schema object
-       
+   .. attribute:: session
 
+      Snowpark Session
+
+      :type: Session
+
+   .. attribute:: database
+
+      database that the object is in
+
+      :type: str
+
+   .. attribute:: schema
+
+      schema that the object is in
+
+      :type: str
+
+   .. attribute:: object_name
+
+      the name of the object
+
+      :type: str
+
+   .. attribute:: object_type
+
+      the type of schema object
+
+      :type: str
 
    .. py:attribute:: session
       :type: snowflake.snowpark.Session
@@ -119,45 +134,45 @@ Functions
 
       grant access on object, return status
 
-      # -- For TABLE  
-      #   { SELECT | INSERT | UPDATE | DELETE | TRUNCATE | REFERENCES } [ , ... ]  
-      # -- For VIEW  
-      #   { SELECT | REFERENCES } [ , ... ]  
-      # -- For MATERIALIZED VIEW  
-      #   { SELECT | REFERENCES } [ , ... ]  
-      # -- For SEQUENCE, FUNCTION (UDF or external function), PROCEDURE, or FILE FORMAT  
-      #     USAGE  
-      # -- For internal STAGE  
-      #     READ [ , WRITE ]  
-      # -- For external STAGE  
-      #     USAGE  
-      # -- For PIPE  
-      #    { MONITOR | OPERATE } [ , ... ]  
-      # -- For STREAM  
-      #     SELECT  
-      # -- For TASK  
-      #    { MONITOR | OPERATE } [ , ... ]  
-      # -- For MASKING POLICY  
-      #     APPLY  
-      # -- For PASSWORD POLICY  
-      #      APPLY  
-      # -- For ROW ACCESS POLICY  
-      #     APPLY  
-      # -- For SESSION POLICY  
-      #     APPLY  
-      # -- For TAG  
-      #     APPLY  
-      # -- For ALERT  
-      #     OPERATE  
-      # -- For SECRET  
-      #     USAGE  
+      | -- For TABLE
+      |   { SELECT | INSERT | UPDATE | DELETE | TRUNCATE | REFERENCES } [ , ... ]
+      | -- For VIEW
+      |   { SELECT | REFERENCES } [ , ... ]
+      | -- For MATERIALIZED VIEW
+      |   { SELECT | REFERENCES } [ , ... ]
+      | -- For SEQUENCE, FUNCTION (UDF or external function), PROCEDURE, or FILE FORMAT
+      |     USAGE
+      | -- For internal STAGE
+      |     READ [ , WRITE ]
+      | -- For external STAGE
+      |     USAGE
+      | -- For PIPE
+      |    { MONITOR | OPERATE } [ , ... ]
+      | -- For STREAM
+      |     SELECT
+      | -- For TASK
+      |    { MONITOR | OPERATE } [ , ... ]
+      | -- For MASKING POLICY
+      |     APPLY
+      | -- For PASSWORD POLICY
+      |      APPLY
+      | -- For ROW ACCESS POLICY
+      |     APPLY
+      | -- For SESSION POLICY
+      |     APPLY
+      | -- For TAG
+      |     APPLY
+      | -- For ALERT
+      |     OPERATE
+      | -- For SECRET
+      |     USAGE
 
 
 
    .. py:method:: create(sql_ext: str = '')
 
-      create in snowflake if not exists. For now this is very dependant on object type. 
-      Usualy the additional stuff comes after the object name, which can be provided by the sql_ext param. 
+      create in snowflake if not exists. For now this is very dependant on object type.
+      Usualy the additional stuff comes after the object name, which can be provided by the sql_ext param.
       (todo: sql ext could just make more confusing - maybe need to create specific extension objects)
 
 
@@ -166,32 +181,54 @@ Functions
 
    A filter that can be used to return multiple SchemaObjects
 
-   Apply selection first, then filter out ingore objects.  
+   Apply selection first, then filter out ingore objects.
 
    Filters are applied by:
-       database -> ignore_dbs -> schema -> ignore_schemas -> object type -> object name    
-       
+       database -> ignore_dbs -> schema -> ignore_schemas -> object type -> object name
+
    ".*" can be used to return all (regex supported)
 
-   Attributes
-   ----------
-   session: Session
-       Snowpark Session
-   databases: list
-       databases that wil be searched
-   schemas: list
-       schemas that wil be searched
-   object_names: list
-       the name of the objects to be searched for
-   object_types: list
-       the type of schema objects to be searched for
-   ignore_dbs: list
-       databases to be ignored in search
-   ignore_schemas: list
-       schemas to be ignored in search
+   .. attribute:: session
 
+      Snowpark Session
 
+      :type: Session
 
+   .. attribute:: databases
+
+      databases that wil be searched
+
+      :type: list
+
+   .. attribute:: schemas
+
+      schemas that wil be searched
+
+      :type: list
+
+   .. attribute:: object_names
+
+      the name of the objects to be searched for
+
+      :type: list
+
+   .. attribute:: object_types
+
+      the type of schema objects to be searched for
+
+      :type: list
+
+   .. attribute:: ignore_dbs
+
+      databases to be ignored in search
+
+      :type: list
+
+   .. attribute:: ignore_schemas
+
+      schemas to be ignored in search
+
+      :type: list
 
    .. py:attribute:: session
       :type: snowflake.snowpark.Session
@@ -251,30 +288,24 @@ Functions
 
       If exclude is set to true, everything matched will be ignored, and all non-matches are returned
 
-      Parameters
-      ----------
-      None : 
-           
+      :param None:
 
-      Returns
-      -------
-      List[SchemaObjects]
-          a list of schema objects that matched the filter cases
+      :returns: a list of schema objects that matched the filter cases
+      :rtype: List[SchemaObjects]
 
-      Example
-      -------
-      Get all procedures in all databases:  
-      >> SchemaObjectFilter([".*"], [".*"], [".*"], ["procedure"])
+      .. rubric:: Example
 
-      Get all tables and vies in a single database:  
-      >> SchemaObjectFilter(["TEST_DB"], [".*"], [".*"], ["table", "view"])
+      | Get all procedures in all databases:
+      | >> SchemaObjectFilter([".*"], [".*"], [".*"], ["procedure"])
 
-      Get all tables except for the sample tables:  
-      >> SchemaObjectFilter([".*"], [".*"],[".*"], ["table"], ingore_dbs = ["SNOWFLAKE", "SNOWFLAKE_SAMPLE_DATA"]
+      | Get all tables and vies in a single database:
+      | >> SchemaObjectFilter(["TEST_DB"], [".*"], [".*"], ["table", "view"])
 
-      Get specific tables:  
-      >> SchemaObjectFilter(["snowflake"], ["sample_data"], ["customer", "transactions"], ["table"])
+      | Get all tables except for the sample tables:
+      | >> SchemaObjectFilter([".*"], [".*"],[".*"], ["table"], ingore_dbs = ["SNOWFLAKE", "SNOWFLAKE_SAMPLE_DATA"]
 
+      | Get specific tables:
+      | >> SchemaObjectFilter(["snowflake"], ["sample_data"], ["customer", "transactions"], ["table"])
 
 
 
@@ -282,67 +313,58 @@ Functions
 
    Returns the extended Session class
 
-   Parameters
-   ----------
-   session : Session
-       Snowpark Session
+   :param session: Snowpark Session
+   :type session: Session
 
-   Returns
-   -------
-   Session
-       The exteneded Snowpark Session
+   :returns: The exteneded Snowpark Session
+   :rtype: Session
 
-   Example
-   -------
+   .. rubric:: Example
+
    >> session = extend_session(Session).builder.configs(connection_parameters).create()
 
 
 .. py:function:: auto_union_standalone(session: snowflake.snowpark.Session, union_dfs: list) -> snowflake.snowpark.DataFrame
 
-   Returns a unioned dataframe from the input list of dataframes based on column names. 
-   Primarly to handle cases where the number of columns do not match, 
+   Returns a unioned dataframe from the input list of dataframes based on column names.
+   Primarly to handle cases where the number of columns do not match,
    which is not suppored by the base union function.
    If columns do not match, non-matching columns are added with null values to the base dataframes.
 
-   Parameters
-   ----------
-   session : Session
-       session object
-   union_dfs : list
-       A list of the input snowpark dataframes to union
+   :param session: session object
+   :type session: Session
+   :param union_dfs: A list of the input snowpark dataframes to union
+   :type union_dfs: list
 
-   Returns
-   -------
-   snowpark.DataFrame
-       A snowpark dataframe with the unioned input dataframes
+   :returns: A snowpark dataframe with the unioned input dataframes
+   :rtype: snowpark.DataFrame
 
-   Example
-   -------
-       >> schema_1 = StructType([StructField("a", IntegerType()), StructField("b", StringType())])  
-       >> schema_2 = StructType([StructField("a", FloatType()), StructField("c", StringType())])  
-       >> schema_3 = StructType([StructField("a", IntegerType()), StructField("c", StringType())])  
-       >> schema_4 = StructType([StructField("c", StringType()), StructField("d", StringType())])  
+   .. rubric:: Example
 
-       >> df_1 = session.create_dataframe([[1, "snow"], [3, "flake"]], schema_1)  
-       >> df_2 = session.create_dataframe([[2.0, "ice"], [4.0, "pick"]], schema_2)  
-       >> df_3 = session.create_dataframe([[6, "test_1"], [7, "test_2"]], schema_3)  
-       >> df_4 = session.create_dataframe([["testing_d", "testing_f"], ["testing_g", "testing_h"]], schema_4)  
+   | >> schema_1 = StructType([StructField("a", IntegerType()), StructField("b", StringType())])
+   | >> schema_2 = StructType([StructField("a", FloatType()), StructField("c", StringType())])
+   | >> schema_3 = StructType([StructField("a", IntegerType()), StructField("c", StringType())])
+   | >> schema_4 = StructType([StructField("c", StringType()), StructField("d", StringType())])
 
-       >> union_dfs = [df_1, df_2, df_3, df_4]  
-       >> unioned_df = auto_union(session, union_dfs)  
-       >> unioned_df.show()  
-       ----------------------------------------  
-       |"A"   |"B"    |"C"        |"D"        |  
-       ----------------------------------------  
-       |1.0   |snow   |NULL       |NULL       |  
-       |3.0   |flake  |NULL       |NULL       |  
-       |2.0   |NULL   |ice        |NULL       |  
-       |4.0   |NULL   |pick       |NULL       |  
-       |6.0   |NULL   |test_1     |NULL       |  
-       |7.0   |NULL   |test_2     |NULL       |  
-       |NULL  |NULL   |testing_d  |testing_f  |  
-       |NULL  |NULL   |testing_g  |testing_h  |  
-       ----------------------------------------  
+   | >> df_1 = session.create_dataframe([[1, "snow"], [3, "flake"]], schema_1)
+   | >> df_2 = session.create_dataframe([[2.0, "ice"], [4.0, "pick"]], schema_2)
+   | >> df_3 = session.create_dataframe([[6, "test_1"], [7, "test_2"]], schema_3)
+   | >> df_4 = session.create_dataframe([["testing_d", "testing_f"], ["testing_g", "testing_h"]], schema_4)
 
+   | >> union_dfs = [df_1, df_2, df_3, df_4]
+   | >> unioned_df = auto_union(session, union_dfs)
+   | >> unioned_df.show()
+   | ----------------------------------------
+   | |"A"   |"B"    |"C"        |"D"        |
+   | ----------------------------------------
+   | |1.0   |snow   |NULL       |NULL       |
+   | |3.0   |flake  |NULL       |NULL       |
+   | |2.0   |NULL   |ice        |NULL       |
+   | |4.0   |NULL   |pick       |NULL       |
+   | |6.0   |NULL   |test_1     |NULL       |
+   | |7.0   |NULL   |test_2     |NULL       |
+   | |NULL  |NULL   |testing_d  |testing_f  |
+   | |NULL  |NULL   |testing_g  |testing_h  |
+   | ----------------------------------------
 
 
