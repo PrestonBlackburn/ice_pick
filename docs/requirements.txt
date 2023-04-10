@@ -1,6 +1,7 @@
 sphinx
+sphinx-autoapi
+nbsphinx
 myst-parser
 furo
-nbsphinx
 ipykernel
 IPython
