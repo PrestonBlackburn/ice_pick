@@ -1,0 +1,6 @@
+sphinx
+myst-parser
+furo
+nbsphinx
+ipykernel
+IPython

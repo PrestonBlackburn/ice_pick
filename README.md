@@ -1,6 +1,7 @@
+![ice pick logo](./docs/img/ice_pick_logo_mountain.png)
+
 # Ice Pick
 
-## What is it?
 
 **Ice Pick** is a Python package that provides utilities for common operations done on a Snowflake warehouse. Operations range from getting Snowflake object ddl, getting table statistics, and returning account level information.
 
