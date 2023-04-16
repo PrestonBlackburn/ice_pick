@@ -61,6 +61,9 @@ class SchemaObject:
         ddl_df = snowpark_query(self.session, ddl_sql)
         
         ddl_str = ddl_df.iloc[0][0]
+
+        # load to state to help create object
+        self.ddl_str = ddl_str
         
         return ddl_str
 
@@ -134,21 +137,37 @@ class SchemaObject:
         
         return grant_status_str
     
-    def create(self, sql_ext:str = ""):
+    def create(self, create_method:str = "default", ddl:str = "", sql_ext:str = "", create_if_exists:bool = False):
         """ create in snowflake if not exists. For now this is very dependant on object type. 
         Usualy the additional stuff comes after the object name, which can be provided by the sql_ext param. 
         (todo: sql ext could just make more confusing - maybe need to create specific extension objects)
+
+        create_methods:
+            - default:    
+            - ddl:        user provided ddl string
+            - ddl_state:  use ddl from get_ddl() function
         """
+
         
-        create_sql = f""" create {self.object_type} if not exists
-                       "{self.database}"."{self.schema}"."{self.object_name}"
-                       {sql_ext}; """
+        if create_method == "default":
+            create_sql = f""" create {self.object_type} if not exists
+                        "{self.database}"."{self.schema}"."{self.object_name}"
+                        {sql_ext}; """
+        
+        if create_method == "ddl_state":
+            create_sql = self.ddl_str
+
+
+        if create_method == "ddl":
+            create_sql = ddl
+
         
         create_df = snowpark_query(self.session, create_sql, non_select=True)
         
         create_status_str = create_df.iloc[0][0]
         
         return create_status_str
+
     
 
 

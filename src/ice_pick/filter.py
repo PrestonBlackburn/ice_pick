@@ -267,3 +267,26 @@ class SchemaObjectFilter:
         schema_object_list = schema_object_series.tolist()
 
         return schema_object_list
+
+
+
+
+
+
+
+
+
+
+@dataclass
+class AccountObjectFilter:
+    session: Session
+    object_names: list       # ex: [".*"]
+    object_types: list       # ex: [".*"]
+    
+
+    def return_account_objects():
+        """
+        Return all account objects matching the filter
+        """
+        return
+    

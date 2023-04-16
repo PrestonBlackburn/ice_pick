@@ -7,7 +7,13 @@ from snowflake.snowpark import Session
 
 from ice_pick.schema_object import SchemaObject
 from ice_pick.filter import SchemaObjectFilter
-from ice_pick.utils import auto_union_standalone
+from ice_pick.utils import concat_standalone
+
+from ice_pick.account_object import (
+    AccountObject,
+    Warehouse,
+    Role
+)
 
 
 #todo - create a wrapper to help with monkey patching
@@ -27,11 +33,32 @@ def create_schema_object_filter(self, databases, schemas, object_names,
                                 ignore_schemas)
 
 
-def auto_union(self, union_dfs:list):
 
-    unioned_dfs = auto_union_standalone(self, union_dfs)
+
+
+def create_account_object(self, name, object_type):
+
+    return AccountObject(self, name, object_type)
+
+
+def create_warehouse(self, name):
+
+    return Warehouse(self, name)
+
+def create_role(self, name):
+
+    return Role(self, name)
+
+
+
+
+
+def concat(self, union_dfs:list):
+
+    unioned_dfs = concat_standalone(self, union_dfs)
 
     return unioned_dfs
+
 
 
 
@@ -57,7 +84,14 @@ def extend_session(Session: Session) -> Session:
     # adding the methods to create the schema objects
     Session.create_schema_object = create_schema_object 
     Session.create_schema_object_filter = create_schema_object_filter
-    Session.auto_union = auto_union
+    
+    # adding the methods to create the account objects
+    Session.AccountObject = create_account_object
+    Session.Role = create_role
+    Session.Warehouse = create_warehouse
+
+    # adding the methods to create misc functions
+    Session.concat = concat
 
     return Session
 

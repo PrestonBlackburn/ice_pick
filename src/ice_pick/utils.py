@@ -122,8 +122,8 @@ def _populate_union_df(ext_dfs:list, union_df: snowpark.DataFrame) -> snowpark.D
   
     return union_df
 
-
-def auto_union_standalone(session:Session, union_dfs:list) -> snowpark.DataFrame:
+# Might move these to a "pandas_func" module
+def concat_standalone(session:Session, union_dfs:list) -> snowpark.DataFrame:
     """
     Returns a unioned dataframe from the input list of dataframes based on column names. 
     Primarly to handle cases where the number of columns do not match, 
@@ -185,3 +185,31 @@ def auto_union_standalone(session:Session, union_dfs:list) -> snowpark.DataFrame
     union_df = _populate_union_df(ext_dfs, union_df)
     
     return union_df
+
+
+
+
+def melt():
+
+    return
+
+
+
+def isna():
+
+    return
+
+
+def isnull():
+
+    return
+
+
+def pivot():
+
+    return
+
+
+def get_dummies():
+
+    return
