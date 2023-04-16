@@ -30,6 +30,10 @@ class AccountObject:
         self.name = name
         self.object_type = object_type
 
+    def __repr__(self):
+        return (f'{self.__class__.__name__}'
+                f'(session={self.session!r}, name={self.name!r}, object_type={self.object_type!r})')
+
 
     def get_description(self):
         """

@@ -14,6 +14,10 @@ import pandas as pd
 import numpy as np
 
 
+
+# maybe add an option to log all sql executions 
+# could be nice to have more transparency
+# (at least add logging for debugging)
 def snowpark_query(session, sql, non_select=False):
     """ 
     non-select queries include things like: 
