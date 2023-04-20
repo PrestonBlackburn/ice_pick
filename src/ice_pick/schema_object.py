@@ -24,6 +24,7 @@ class SchemaObject:
     ROW ACCESS POLICIES, SECRETS, SESSION POLICIES, SEQUENCES, STAGES, STREAMS,
     TABLES, TAGS, TASKS, USER FUNCTIONS,  VIEWS, *EXTERNAL FUNCTIONS,
      *PROCEDURES, *USER FUNCTIONS
+     ** Also note some of these objects require the enterprise account
 
     Attributes
     ----------

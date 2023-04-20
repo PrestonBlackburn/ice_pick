@@ -4,6 +4,7 @@ import copy
 import re
 import configparser
 import warnings
+import logging
 
 from snowflake.snowpark import Session
 import snowflake.snowpark as snowpark
@@ -141,9 +142,12 @@ class SchemaObjectFilter:
         # loop through object types for "show" query
         obj_df_list = []
         for obj_type in obj_type_filter:
-            objects_sql = f""" show {obj_type} in account; """
-            objects_df = snowpark_query(self.session, objects_sql, non_select=True)
-
+            try:
+                objects_sql = f""" show {obj_type} in account; """
+                objects_df = snowpark_query(self.session, objects_sql, non_select=True)
+            except Exception as e:
+                logging.warning("Some objects require a Enterprise or Buisness Critial account to access")
+                objects_df = pd.DataFrame()
             # g4t dfs to format: name, schema_name, database_name
             # need to filter based on name and type:
             if objects_df.empty:
