@@ -200,12 +200,14 @@ def concat_standalone(session: Session, union_dfs: list) -> snowpark.DataFrame:
     return union_df
 
 
-def melt_standalone(session:Session,
-                     df: snowpark.DataFrame,
-                       id_vars:list,
-                         value_vars:list,
-                           var_name:str ='variable',
-                             value_name:str ='value') -> snowpark.DataFrame:
+def melt_standalone(
+    session: Session,
+    df: snowpark.DataFrame,
+    id_vars: list,
+    value_vars: list,
+    var_name: str = "variable",
+    value_name: str = "value",
+) -> snowpark.DataFrame:
     """
     Returns a unioned dataframe from the input list of dataframes based on column names.
     Primarly to handle cases where the number of columns do not match,
@@ -226,7 +228,7 @@ def melt_standalone(session:Session,
         Name of the variable column
     value_name: str, default 'value'
         Name of the value column
-    
+
 
     Returns
     -------

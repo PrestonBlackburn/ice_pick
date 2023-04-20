@@ -178,23 +178,24 @@ class SchemaObjectFilter:
                 )
 
                 obj_df_list.append(obj_filtered_schema_df)
-        
 
         if obj_df_list == []:
-            warnings.warn(f"""No objects found with filter:
+            warnings.warn(
+                f"""No objects found with filter:
                             databases: {self.databases}
                             schemas: {self.schemas}
                             object_types: {self.object_types}
                             object_names: {self.object_names}
                             ingore_dbs: {self.ignore_dbs} 
-                            ignore_schemas: {self.ignore_schemas}""", UserWarning)
+                            ignore_schemas: {self.ignore_schemas}""",
+                UserWarning,
+            )
             return []
-        
+
         else:
             all_objs_df = pd.concat(obj_df_list)
 
             return all_objs_df
-        
 
     def return_schema_objects(self) -> List[SchemaObject]:
         """
@@ -275,11 +276,11 @@ class SchemaObjectFilter:
         # print(all_objs_df)
 
         # return all_objs_df
-    
+
         # handle the case when there are no objects:
         if isinstance(all_objs_df, list):
             return []
-        
+
         # otherwise create schema objects for the dataframe
         schema_object_series = all_objs_df.apply(
             lambda x: SchemaObject(

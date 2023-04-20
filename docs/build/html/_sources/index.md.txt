@@ -19,7 +19,8 @@ This library is still in the concept stage.
 :maxdepth: 2
 
 usage
-notebooks/tutorial
+notebooks/quickstart
+notebooks/how_to_guide
 ```
 
 

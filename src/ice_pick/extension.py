@@ -10,12 +10,7 @@ from ice_pick.filter import SchemaObjectFilter
 from ice_pick.utils import concat_standalone
 from ice_pick.utils import melt_standalone
 
-from ice_pick.account_object import (
-    AccountObject, 
-    Warehouse, 
-    Role,
-    User
-)
+from ice_pick.account_object import AccountObject, Warehouse, Role, User
 
 
 # todo - create a wrapper to help with monkey patching
@@ -60,10 +55,21 @@ def concat(self, union_dfs: list):
 
     return unioned_dfs
 
-def melt(self, df, id_vars:list, value_vars:list, var_name:str ='variable', value_name:str ='value'):
-    melt_df = melt_standalone(self, df, id_vars, value_vars, var_name = var_name, value_name =value_name)
+
+def melt(
+    self,
+    df,
+    id_vars: list,
+    value_vars: list,
+    var_name: str = "variable",
+    value_name: str = "value",
+):
+    melt_df = melt_standalone(
+        self, df, id_vars, value_vars, var_name=var_name, value_name=value_name
+    )
 
     return melt_df
+
 
 def extend_session(Session: Session) -> Session:
     """

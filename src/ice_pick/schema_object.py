@@ -50,17 +50,17 @@ class SchemaObject:
 
     # Which functions should be a part of the class, and
     # which should be outside teh class?
-    def get_ddl(self, save:bool = False) -> str:
+    def get_ddl(self, save: bool = False) -> str:
         """
         Return the ddl of the schema object as a string
         if save = True: save the ddl locally
         The default save path is:
         DDL/database/schema/object_type/database.schema.object_name.sql
-        
+
         Parameters
         ----------
         save : bool = False
-            save the ddl as a file locally 
+            save the ddl as a file locally
 
         Returns
         -------
@@ -68,15 +68,13 @@ class SchemaObject:
             A string with the ddl
 
         """
-        ddl_exception_list = ['USER FUNCTION', 'USER POLICY']
-        ddl_exception_map = {'USER FUNCTION': 'FUNCTION',
-                             'USER POLICY': 'POLICY'}
+        ddl_exception_list = ["USER FUNCTION", "USER POLICY"]
+        ddl_exception_map = {"USER FUNCTION": "FUNCTION", "USER POLICY": "POLICY"}
 
         if self.object_type in ddl_exception_list:
             self.ddl_object_type = ddl_exception_map[self.object_type]
         else:
             self.ddl_object_type = self.object_type
-
 
         ddl_sql = f"""select get_ddl('{self.ddl_object_type}',
                 '{self.database}.{self.schema}.{self.object_name}' );"""
@@ -88,7 +86,6 @@ class SchemaObject:
         self.ddl_str = ddl_str
 
         if save:
-
             path = f"DDL/{self.database}/{self.schema}/{self.object_type}"
             filename = f"{self.database}.{self.schema}.{self.object_name}.sql"
             output_file = Path(f"{path}/{filename}")
@@ -96,7 +93,6 @@ class SchemaObject:
             output_file.write_text(ddl_str)
 
         return ddl_str
-    
 
     def get_description(self) -> str:
         """
