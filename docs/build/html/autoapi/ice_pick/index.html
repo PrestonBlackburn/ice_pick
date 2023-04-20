@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
-        <title>ice_pick - Snowflake Ice Pick 0.0.1 documentation</title>
+        <title>ice_pick - Snowflake Ice Pick 0.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Snowflake Ice Pick 0.0.1 documentation</div></a>
+      <a href="../../index.html"><div class="brand">Snowflake Ice Pick 0.0.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">Snowflake Ice Pick 0.0.1 documentation</span>
+  <span class="sidebar-brand-text">Snowflake Ice Pick 0.0.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -157,7 +157,8 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebooks/tutorial.html">Ice pick quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/quickstart.html">Ice pick quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/how_to_guide.html">How To Guide</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ice_pick</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="account_object/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ice_pick.account_object</span></code></a></li>
@@ -233,6 +234,18 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ice_pick.SchemaObjectFilter" title="ice_pick.SchemaObjectFilter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SchemaObjectFilter</span></code></a></p></td>
 <td><p>A filter that can be used to return multiple SchemaObjects</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ice_pick.AccountObject" title="ice_pick.AccountObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AccountObject</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ice_pick.Warehouse" title="ice_pick.Warehouse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Warehouse</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ice_pick.Role" title="ice_pick.Role"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Role</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ice_pick.User" title="ice_pick.User"><code class="xref py py-obj docutils literal notranslate"><span class="pre">User</span></code></a></p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -245,7 +258,10 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ice_pick.extend_session" title="ice_pick.extend_session"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extend_session</span></code></a>(→ extend_session.Session)</p></td>
 <td><p>Returns the extended Session class</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ice_pick.auto_union_standalone" title="ice_pick.auto_union_standalone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_union_standalone</span></code></a>(→ snowflake.snowpark.DataFrame)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ice_pick.concat_standalone" title="ice_pick.concat_standalone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concat_standalone</span></code></a>(→ snowflake.snowpark.DataFrame)</p></td>
+<td><p>Returns a unioned dataframe from the input list of dataframes based on column names.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ice_pick.melt_standalone" title="ice_pick.melt_standalone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">melt_standalone</span></code></a>(→ snowflake.snowpark.DataFrame)</p></td>
 <td><p>Returns a unioned dataframe from the input list of dataframes based on column names.</p></td>
 </tr>
 </tbody>
@@ -344,8 +360,22 @@ TABLES, TAGS, TASKS, USER FUNCTIONS,  VIEWS, <a href="#id1"><span class="problem
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ice_pick.SchemaObject.get_ddl">
-<span class="sig-name descname"><span class="pre">get_ddl</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ice_pick.SchemaObject.get_ddl" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the ddl of the schema object as a string</p>
+<span class="sig-name descname"><span class="pre">get_ddl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ice_pick.SchemaObject.get_ddl" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the ddl of the schema object as a string
+if save = True: save the ddl locally
+The default save path is:
+DDL/database/schema/object_type/database.schema.object_name.sql</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>save</strong> (<em>bool = False</em>) – save the ddl as a file locally</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string with the ddl</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -434,10 +464,18 @@ TABLES, TAGS, TASKS, USER FUNCTIONS,  VIEWS, <a href="#id1"><span class="problem
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ice_pick.SchemaObject.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql_ext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.SchemaObject.create" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">create_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sql_ext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_if_exists</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.SchemaObject.create" title="Permalink to this definition">#</a></dt>
 <dd><p>create in snowflake if not exists. For now this is very dependant on object type.
 Usualy the additional stuff comes after the object name, which can be provided by the sql_ext param.
 (todo: sql ext could just make more confusing - maybe need to create specific extension objects)</p>
+<dl class="simple">
+<dt>create_methods:</dt><dd><ul class="simple">
+<li><p>default:</p></li>
+<li><p>ddl:        user provided ddl string</p></li>
+<li><p>ddl_state:  use ddl from get_ddl() function</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -622,6 +660,305 @@ If the property is a wildcard “.*”, then search all objects at that level
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="ice_pick.AccountObject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ice_pick.</span></span><span class="sig-name descname"><span class="pre">AccountObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.AccountObject" title="Permalink to this definition">#</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.AccountObject.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.AccountObject.__repr__" title="Permalink to this definition">#</a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.AccountObject.get_description">
+<span class="sig-name descname"><span class="pre">get_description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.AccountObject.get_description" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the description of the object as a string</p>
+<p>Supports:
+- DATABASE
+- SCHEMA
+- INTEGRATION
+- NETWORK POLICY
+- SHARE
+- USER
+- WAREHOUSE</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.AccountObject.get_ddl">
+<span class="sig-name descname"><span class="pre">get_ddl</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.AccountObject.get_ddl" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the ddl of the schema object as a string</p>
+<p>Supports:
+- DATABASE
+- SCHEMA</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.AccountObject.get_grants_on">
+<span class="sig-name descname"><span class="pre">get_grants_on</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.AccountObject.get_grants_on" title="Permalink to this definition">#</a></dt>
+<dd><p>Supports:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.AccountObject.drop">
+<span class="sig-name descname"><span class="pre">drop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.AccountObject.drop" title="Permalink to this definition">#</a></dt>
+<dd><p>drops object</p>
+<p>Supports:
+most objects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.AccountObject.un_drop">
+<span class="sig-name descname"><span class="pre">un_drop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.AccountObject.un_drop" title="Permalink to this definition">#</a></dt>
+<dd><p>undrops a dropped object
+Supports
+- database
+- schema</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.AccountObject.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.AccountObject.create" title="Permalink to this definition">#</a></dt>
+<dd><p>Supports:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ice_pick.Warehouse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ice_pick.</span></span><span class="sig-name descname"><span class="pre">Warehouse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.Warehouse" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ice_pick.AccountObject" title="ice_pick.AccountObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AccountObject</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.Warehouse.suspend">
+<span class="sig-name descname"><span class="pre">suspend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.Warehouse.suspend" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.Warehouse.resume">
+<span class="sig-name descname"><span class="pre">resume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.Warehouse.resume" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.Warehouse.load_history">
+<span class="sig-name descname"><span class="pre">load_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_range_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_range_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'hour'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#ice_pick.Warehouse.load_history" title="Permalink to this definition">#</a></dt>
+<dd><p>This function returns warehouse activity within the last 14 days.
+This funciton requires elevated privileges to run, either:
+| - The ACCOUNTADMIN role can get results from this function as it has all of the global account permissions.
+| - A role with the MONITOR USAGE global privilege on the ACCOUNT can query this function for any warehouses in the account.
+| - A role with the MONITOR privilege on the WAREHOUSE can query this function for the warehouse it has permissions on.
+| - A role with the OWNERSHIP privilege on the WAREHOUSE has all permissions on the warehouse including MONITOR.
+| (<a class="reference external" href="https://docs.snowflake.com/en/sql-reference/functions/warehouse_load_history">https://docs.snowflake.com/en/sql-reference/functions/warehouse_load_history</a>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date_range_start</strong> (<em>int</em>) – start of hours/days ago interval</p></li>
+<li><p><strong>date_range_end</strong> (<em>int</em>) – end of hours/days ago interval</p></li>
+<li><p><strong>interval</strong> (<em>str</em>) – set the date range to either “days” or “hours”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A snowpark dataframe with the unioned input dataframes</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>snowpark.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>Get the load history for the warehouse for the last 12 hours</p>
+<div class="line-block">
+<div class="line">&gt;&gt; warehouse.load_history(12, 0, interval = “hour”)</div>
+<div class="line"><br /></div>
+<div class="line">Returns Pandas DataFrame With:</div>
+<div class="line">- START_TIME</div>
+<div class="line">- END_TIME</div>
+<div class="line">- WAREHOUSE_NAME</div>
+<div class="line">- AVG_RUNNING</div>
+<div class="line">- AVG_QUEUED_LOAD</div>
+<div class="line">- AVG_QUEUED_PROVISIONING</div>
+<div class="line">- AVG_BLOCKED</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.Warehouse.metering_history">
+<span class="sig-name descname"><span class="pre">metering_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_range_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_range_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'hour'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.Warehouse.metering_history" title="Permalink to this definition">#</a></dt>
+<dd><p>This table function can be used in queries to return the hourly credit usage for a single warehouse (or all the warehouses in your account) within a specified date range.
+This funciton requires elevated privileges to run, either:
+| - The ACCOUNTADMIN role can get results from this function as it has all of the global account permissions.
+| - A role with the MONITOR USAGE global privilege on the ACCOUNT can query this function for any warehouses in the account.
+(<a class="reference external" href="https://docs.snowflake.com/en/sql-reference/functions/warehouse_metering_history">https://docs.snowflake.com/en/sql-reference/functions/warehouse_metering_history</a>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date_range_start</strong> (<em>int</em>) – start of hours/days ago interval</p></li>
+<li><p><strong>date_range_end</strong> (<em>int</em>) – end of hours/days ago interval</p></li>
+<li><p><strong>interval</strong> (<em>str</em>) – set the date range to either “days” or “hours”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A snowpark dataframe with the unioned input dataframes</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>snowpark.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>Get the load history for the warehouse for the last 12 hours</p>
+<div class="line-block">
+<div class="line">&gt;&gt; warehouse.metering_history(12, 0, interval = “hour”)</div>
+<div class="line"><br /></div>
+<div class="line">Returns Pandas DataFrame With:</div>
+<div class="line">- START_TIME</div>
+<div class="line">- END_TIME</div>
+<div class="line">- WAREHOUSE_NAME</div>
+<div class="line">- CREDITS_USED</div>
+<div class="line">- CREDITS_USED_COMPUTE</div>
+<div class="line">- CREDITS_USED_CLOUD_SERVICES</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.Warehouse.query_history">
+<span class="sig-name descname"><span class="pre">query_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_range_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_range_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'hour'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.Warehouse.query_history" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.Warehouse.resize_recommendation">
+<span class="sig-name descname"><span class="pre">resize_recommendation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auto_apply</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ice_pick.Warehouse.resize_recommendation" title="Permalink to this definition">#</a></dt>
+<dd><p>Keeping this simple as a starting point.
+In most cases rules should be customized for individual use cases.
+Rules:
+| - If: Local disk spillage over the last 3 days &gt; 30% for the longest running queries
+| - Then: recommend size up warehouse
+|
+| - If: Local disk spillage over the last 3 days &lt; 2% for the longest running queries
+| - Then: recommend downsizing warehouse
+|
+| - If: Max queued overload time &gt; 10 minutes
+| - And: Local disk spillage over the last 3 days &lt; 2% for the longest running queries
+| - Then: recommend scaling out
+|
+| - If: Max queued overload time &gt; 10 minutes
+| - And: Local disk spillage over the last 3 days &gt; 2% for the longest running queries
+| - Then: recommend scaling up</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.Warehouse.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wh_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.Warehouse.resize" title="Permalink to this definition">#</a></dt>
+<dd><p>Resize the warehouse to specified size
+Warehouse sizes:
+- XSMALL , ‘X-SMALL’
+- SMALL
+- MEDIUM
+- LARGE
+- XLARGE , ‘X-LARGE’
+- XXLARGE , X2LARGE , ‘2X-LARGE’
+- XXXLARGE , X3LARGE , ‘3X-LARGE’
+- X4LARGE , ‘4X-LARGE’
+- X5LARGE , ‘5X-LARGE’
+- X6LARGE , ‘6X-LARGE’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>wh_size</strong> (<em>str</em>) – specified warehouse size</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a string with execution status</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>Resize the warehouse to “SMALL” size</p>
+<div class="line-block">
+<div class="line">&gt;&gt; warehouse.resize(“SMALL”)</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.Warehouse.set_auto_suspend">
+<span class="sig-name descname"><span class="pre">set_auto_suspend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.Warehouse.set_auto_suspend" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the number of seconds of inactivity after which a warehouse is automatically suspended.
+| - Setting a value less than 60 is allowed, but may not result in the desired/expected behavior because the background process that suspends a warehouse runs approximately every 60 seconds and, therefore, is not intended for enabling exact control over warehouse suspension.
+| - Setting a 0 or NULL value means the warehouse never suspends</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>seconds</strong> (<em>int</em>) – the number of seconds of inactivity after which a warehouse is automatically suspended</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a string with execution status</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>Set the warehouse timeout to 60 seconds</p>
+<div class="line-block">
+<div class="line">&gt;&gt; warehouse.auto_suspend(60)</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ice_pick.Role">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ice_pick.</span></span><span class="sig-name descname"><span class="pre">Role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.Role" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ice_pick.AccountObject" title="ice_pick.AccountObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AccountObject</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.Role.show_grants_of">
+<span class="sig-name descname"><span class="pre">show_grants_of</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.Role.show_grants_of" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.Role.show_grants_to">
+<span class="sig-name descname"><span class="pre">show_grants_to</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.Role.show_grants_to" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.Role.show_future_grants">
+<span class="sig-name descname"><span class="pre">show_future_grants</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.Role.show_future_grants" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.Role.show_grants_recursive">
+<span class="sig-name descname"><span class="pre">show_grants_recursive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.Role.show_grants_recursive" title="Permalink to this definition">#</a></dt>
+<dd><p>If a role is granted to another role,
+this function will also look at the privileges of the granted roles</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ice_pick.User">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ice_pick.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ice_pick.User" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ice_pick.AccountObject" title="ice_pick.AccountObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AccountObject</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.User.show_grants_to">
+<span class="sig-name descname"><span class="pre">show_grants_to</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#ice_pick.User.show_grants_to" title="Permalink to this definition">#</a></dt>
+<dd><p>return dataframe with grant information</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.User.get_roles">
+<span class="sig-name descname"><span class="pre">get_roles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#ice_pick.User.get_roles" title="Permalink to this definition">#</a></dt>
+<dd><p>return granted roles as Role objects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.User.get_all_privileges">
+<span class="sig-name descname"><span class="pre">get_all_privileges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="headerlink" href="#ice_pick.User.get_all_privileges" title="Permalink to this definition">#</a></dt>
+<dd><p>return all privileges for a user</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ice_pick.User.check_privilege">
+<span class="sig-name descname"><span class="pre">check_privilege</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema_object</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="schema_object/index.html#ice_pick.schema_object.SchemaObject" title="ice_pick.schema_object.SchemaObject"><span class="pre">ice_pick.schema_object.SchemaObject</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#ice_pick.User.check_privilege" title="Permalink to this definition">#</a></dt>
+<dd><p>maybe a quick way to show privilege on object?</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="ice_pick.extend_session">
 <span class="sig-prename descclassname"><span class="pre">ice_pick.</span></span><span class="sig-name descname"><span class="pre">extend_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">extend_session.Session</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">extend_session.Session</span></span></span><a class="headerlink" href="#ice_pick.extend_session" title="Permalink to this definition">#</a></dt>
@@ -642,8 +979,8 @@ If the property is a wildcard “.*”, then search all objects at that level
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ice_pick.auto_union_standalone">
-<span class="sig-prename descclassname"><span class="pre">ice_pick.</span></span><span class="sig-name descname"><span class="pre">auto_union_standalone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">snowflake.snowpark.Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">union_dfs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">snowflake.snowpark.DataFrame</span></span></span><a class="headerlink" href="#ice_pick.auto_union_standalone" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ice_pick.concat_standalone">
+<span class="sig-prename descclassname"><span class="pre">ice_pick.</span></span><span class="sig-name descname"><span class="pre">concat_standalone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">snowflake.snowpark.Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">union_dfs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">snowflake.snowpark.DataFrame</span></span></span><a class="headerlink" href="#ice_pick.concat_standalone" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns a unioned dataframe from the input list of dataframes based on column names.
 Primarly to handle cases where the number of columns do not match,
 which is not suppored by the base union function.
@@ -691,6 +1028,52 @@ If columns do not match, non-matching columns are added with null values to the 
 <div class="line"><a href="#id74"><span class="problematic" id="id75">|</span></a>NULL  <a href="#id76"><span class="problematic" id="id77">|</span></a>NULL   <a href="#id78"><span class="problematic" id="id79">|</span></a>testing_d  <a href="#id80"><span class="problematic" id="id81">|</span></a>testing_f  |</div>
 <div class="line"><a href="#id82"><span class="problematic" id="id83">|</span></a>NULL  <a href="#id84"><span class="problematic" id="id85">|</span></a>NULL   <a href="#id86"><span class="problematic" id="id87">|</span></a>testing_g  <a href="#id88"><span class="problematic" id="id89">|</span></a>testing_h  |</div>
 <div class="line">—————————————-</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ice_pick.melt_standalone">
+<span class="sig-prename descclassname"><span class="pre">ice_pick.</span></span><span class="sig-name descname"><span class="pre">melt_standalone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">snowflake.snowpark.Session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">snowflake.snowpark.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_vars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_vars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'variable'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'value'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">snowflake.snowpark.DataFrame</span></span></span><a class="headerlink" href="#ice_pick.melt_standalone" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a unioned dataframe from the input list of dataframes based on column names.
+Primarly to handle cases where the number of columns do not match,
+which is not suppored by the base union function.
+If columns do not match, non-matching columns are added with null values to the base dataframes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<em>Session</em>) – session object</p></li>
+<li><p><strong>df</strong> (<em>snowpark.DataFrame</em>) – A snowpark dataframe to melt</p></li>
+<li><p><strong>id_vars</strong> (<em>list</em>) – Column names to use as identifiers</p></li>
+<li><p><strong>value_vars</strong> (<em>list</em>) – Column names to unpivot</p></li>
+<li><p><strong>var_name</strong> (<em>str</em><em>, </em><em>default 'variable'</em>) – Name of the variable column</p></li>
+<li><p><strong>value_name</strong> (<em>str</em><em>, </em><em>default 'value'</em>) – Name of the value column</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A snowpark dataframe with the unpivoted dataframes</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>snowpark.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="line-block">
+<div class="line">&gt;&gt; schema = StructType([StructField(“A”, StringType()), StructField(“B”, IntegerType()), StructField(“C”, IntegerType())])</div>
+<div class="line">&gt;&gt; df = session.create_dataframe([[‘a’, 1, 2], [‘b’, 3, 4], [‘c’, 5, 6]], schema)</div>
+<div class="line">&gt;&gt; melt_df = session.melt(df, [‘A’], [‘B’, ‘C’])</div>
+<div class="line">&gt;&gt; melt_df.show()</div>
+</div>
+<div class="line-block">
+<div class="line">——————————</div>
+<div class="line"><a href="#id90"><span class="problematic" id="id91">|</span></a>”A”  <a href="#id92"><span class="problematic" id="id93">|</span></a>”VALUE”  <a href="#id94"><span class="problematic" id="id95">|</span></a>”VARIABLE”  |</div>
+<div class="line">——————————</div>
+<div class="line"><a href="#id96"><span class="problematic" id="id97">|</span></a>a    <a href="#id98"><span class="problematic" id="id99">|</span></a>1        <a href="#id100"><span class="problematic" id="id101">|</span></a>B           |</div>
+<div class="line"><a href="#id102"><span class="problematic" id="id103">|</span></a>b    <a href="#id104"><span class="problematic" id="id105">|</span></a>3        <a href="#id106"><span class="problematic" id="id107">|</span></a>B           |</div>
+<div class="line"><a href="#id108"><span class="problematic" id="id109">|</span></a>c    <a href="#id110"><span class="problematic" id="id111">|</span></a>5        <a href="#id112"><span class="problematic" id="id113">|</span></a>B           |</div>
+<div class="line"><a href="#id114"><span class="problematic" id="id115">|</span></a>a    <a href="#id116"><span class="problematic" id="id117">|</span></a>2        <a href="#id118"><span class="problematic" id="id119">|</span></a>C           |</div>
+<div class="line"><a href="#id120"><span class="problematic" id="id121">|</span></a>b    <a href="#id122"><span class="problematic" id="id123">|</span></a>4        <a href="#id124"><span class="problematic" id="id125">|</span></a>C           |</div>
+<div class="line"><a href="#id126"><span class="problematic" id="id127">|</span></a>c    <a href="#id128"><span class="problematic" id="id129">|</span></a>6        <a href="#id130"><span class="problematic" id="id131">|</span></a>C           |</div>
+<div class="line">——————————</div>
 </div>
 </dd></dl>
 
@@ -778,8 +1161,44 @@ If columns do not match, non-matching columns are added with null values to the 
 <li><a class="reference internal" href="#ice_pick.SchemaObjectFilter.return_schema_objects"><code class="docutils literal notranslate"><span class="pre">SchemaObjectFilter.return_schema_objects()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#ice_pick.AccountObject"><code class="docutils literal notranslate"><span class="pre">AccountObject</span></code></a><ul>
+<li><a class="reference internal" href="#ice_pick.AccountObject.__repr__"><code class="docutils literal notranslate"><span class="pre">AccountObject.__repr__()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.AccountObject.get_description"><code class="docutils literal notranslate"><span class="pre">AccountObject.get_description()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.AccountObject.get_ddl"><code class="docutils literal notranslate"><span class="pre">AccountObject.get_ddl()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.AccountObject.get_grants_on"><code class="docutils literal notranslate"><span class="pre">AccountObject.get_grants_on()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.AccountObject.drop"><code class="docutils literal notranslate"><span class="pre">AccountObject.drop()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.AccountObject.un_drop"><code class="docutils literal notranslate"><span class="pre">AccountObject.un_drop()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.AccountObject.create"><code class="docutils literal notranslate"><span class="pre">AccountObject.create()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ice_pick.Warehouse"><code class="docutils literal notranslate"><span class="pre">Warehouse</span></code></a><ul>
+<li><a class="reference internal" href="#ice_pick.Warehouse.suspend"><code class="docutils literal notranslate"><span class="pre">Warehouse.suspend()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.resume"><code class="docutils literal notranslate"><span class="pre">Warehouse.resume()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.load_history"><code class="docutils literal notranslate"><span class="pre">Warehouse.load_history()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.metering_history"><code class="docutils literal notranslate"><span class="pre">Warehouse.metering_history()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.query_history"><code class="docutils literal notranslate"><span class="pre">Warehouse.query_history()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.resize_recommendation"><code class="docutils literal notranslate"><span class="pre">Warehouse.resize_recommendation()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.resize"><code class="docutils literal notranslate"><span class="pre">Warehouse.resize()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.set_auto_suspend"><code class="docutils literal notranslate"><span class="pre">Warehouse.set_auto_suspend()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ice_pick.Role"><code class="docutils literal notranslate"><span class="pre">Role</span></code></a><ul>
+<li><a class="reference internal" href="#ice_pick.Role.show_grants_of"><code class="docutils literal notranslate"><span class="pre">Role.show_grants_of()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.Role.show_grants_to"><code class="docutils literal notranslate"><span class="pre">Role.show_grants_to()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.Role.show_future_grants"><code class="docutils literal notranslate"><span class="pre">Role.show_future_grants()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.Role.show_grants_recursive"><code class="docutils literal notranslate"><span class="pre">Role.show_grants_recursive()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ice_pick.User"><code class="docutils literal notranslate"><span class="pre">User</span></code></a><ul>
+<li><a class="reference internal" href="#ice_pick.User.show_grants_to"><code class="docutils literal notranslate"><span class="pre">User.show_grants_to()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.User.get_roles"><code class="docutils literal notranslate"><span class="pre">User.get_roles()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.User.get_all_privileges"><code class="docutils literal notranslate"><span class="pre">User.get_all_privileges()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.User.check_privilege"><code class="docutils literal notranslate"><span class="pre">User.check_privilege()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#ice_pick.extend_session"><code class="docutils literal notranslate"><span class="pre">extend_session()</span></code></a></li>
-<li><a class="reference internal" href="#ice_pick.auto_union_standalone"><code class="docutils literal notranslate"><span class="pre">auto_union_standalone()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.concat_standalone"><code class="docutils literal notranslate"><span class="pre">concat_standalone()</span></code></a></li>
+<li><a class="reference internal" href="#ice_pick.melt_standalone"><code class="docutils literal notranslate"><span class="pre">melt_standalone()</span></code></a></li>
 <li><a class="reference internal" href="#ice_pick.SchemaObject">SchemaObject</a><ul>
 <li><a class="reference internal" href="#ice_pick.SchemaObject.session">session</a></li>
 <li><a class="reference internal" href="#ice_pick.SchemaObject.database">database</a></li>
@@ -818,8 +1237,44 @@ If columns do not match, non-matching columns are added with null values to the 
 <li><a class="reference internal" href="#ice_pick.SchemaObjectFilter.return_schema_objects">return_schema_objects</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#ice_pick.AccountObject">AccountObject</a><ul>
+<li><a class="reference internal" href="#ice_pick.AccountObject.__repr__">__repr__</a></li>
+<li><a class="reference internal" href="#ice_pick.AccountObject.get_description">get_description</a></li>
+<li><a class="reference internal" href="#ice_pick.AccountObject.get_ddl">get_ddl</a></li>
+<li><a class="reference internal" href="#ice_pick.AccountObject.get_grants_on">get_grants_on</a></li>
+<li><a class="reference internal" href="#ice_pick.AccountObject.drop">drop</a></li>
+<li><a class="reference internal" href="#ice_pick.AccountObject.un_drop">un_drop</a></li>
+<li><a class="reference internal" href="#ice_pick.AccountObject.create">create</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ice_pick.Warehouse">Warehouse</a><ul>
+<li><a class="reference internal" href="#ice_pick.Warehouse.suspend">suspend</a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.resume">resume</a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.load_history">load_history</a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.metering_history">metering_history</a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.query_history">query_history</a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.resize_recommendation">resize_recommendation</a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.resize">resize</a></li>
+<li><a class="reference internal" href="#ice_pick.Warehouse.set_auto_suspend">set_auto_suspend</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ice_pick.Role">Role</a><ul>
+<li><a class="reference internal" href="#ice_pick.Role.show_grants_of">show_grants_of</a></li>
+<li><a class="reference internal" href="#ice_pick.Role.show_grants_to">show_grants_to</a></li>
+<li><a class="reference internal" href="#ice_pick.Role.show_future_grants">show_future_grants</a></li>
+<li><a class="reference internal" href="#ice_pick.Role.show_grants_recursive">show_grants_recursive</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ice_pick.User">User</a><ul>
+<li><a class="reference internal" href="#ice_pick.User.show_grants_to">show_grants_to</a></li>
+<li><a class="reference internal" href="#ice_pick.User.get_roles">get_roles</a></li>
+<li><a class="reference internal" href="#ice_pick.User.get_all_privileges">get_all_privileges</a></li>
+<li><a class="reference internal" href="#ice_pick.User.check_privilege">check_privilege</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#ice_pick.extend_session">extend_session</a></li>
-<li><a class="reference internal" href="#ice_pick.auto_union_standalone">auto_union_standalone</a></li>
+<li><a class="reference internal" href="#ice_pick.concat_standalone">concat_standalone</a></li>
+<li><a class="reference internal" href="#ice_pick.melt_standalone">melt_standalone</a></li>
 </ul>
 </li>
 </ul>

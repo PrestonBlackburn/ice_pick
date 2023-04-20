@@ -2,6 +2,8 @@
 
 # Ice Pick
 [![PyPI Latest Release](https://img.shields.io/pypi/v/snowflake-ice-pick.svg)](https://pypi.org/project/snowflake-ice-pick/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/PrestonBlackburn/ice_pick/blob/main/LICENSE)
+[![Codestyle Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 **Ice Pick** is a Python package that provides utilities for common operations done on a Snowflake warehouse. Operations range from getting Snowflake object ddl, getting table statistics, and returning account level information.
 

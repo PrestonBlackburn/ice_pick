@@ -33,6 +33,10 @@ Classes
 
    ice_pick.SchemaObject
    ice_pick.SchemaObjectFilter
+   ice_pick.AccountObject
+   ice_pick.Warehouse
+   ice_pick.Role
+   ice_pick.User
 
 
 
@@ -42,7 +46,8 @@ Functions
 .. autoapisummary::
 
    ice_pick.extend_session
-   ice_pick.auto_union_standalone
+   ice_pick.concat_standalone
+   ice_pick.melt_standalone
 
 
 
@@ -115,9 +120,18 @@ Functions
 
       
 
-   .. py:method:: get_ddl() -> str
+   .. py:method:: get_ddl(save: bool = False) -> str
 
       Return the ddl of the schema object as a string
+      if save = True: save the ddl locally
+      The default save path is:
+      DDL/database/schema/object_type/database.schema.object_name.sql
+
+      :param save: save the ddl as a file locally
+      :type save: bool = False
+
+      :returns: A string with the ddl
+      :rtype: str
 
 
    .. py:method:: get_description() -> str
@@ -169,11 +183,16 @@ Functions
 
 
 
-   .. py:method:: create(sql_ext: str = '')
+   .. py:method:: create(create_method: str = 'default', ddl: str = '', sql_ext: str = '', create_if_exists: bool = False)
 
       create in snowflake if not exists. For now this is very dependant on object type.
       Usualy the additional stuff comes after the object name, which can be provided by the sql_ext param.
       (todo: sql ext could just make more confusing - maybe need to create specific extension objects)
+
+      create_methods:
+          - default:
+          - ddl:        user provided ddl string
+          - ddl_state:  use ddl from get_ddl() function
 
 
 
@@ -309,6 +328,267 @@ Functions
 
 
 
+.. py:class:: AccountObject(session, name: str, object_type: str)
+
+   .. py:method:: __repr__()
+
+      Return repr(self).
+
+
+   .. py:method:: get_description()
+
+      Return the description of the object as a string
+
+      Supports:
+      - DATABASE
+      - SCHEMA
+      - INTEGRATION
+      - NETWORK POLICY
+      - SHARE
+      - USER
+      - WAREHOUSE
+
+
+
+   .. py:method:: get_ddl()
+
+      Return the ddl of the schema object as a string
+
+      Supports:
+      - DATABASE
+      - SCHEMA
+
+
+
+   .. py:method:: get_grants_on()
+
+      Supports:
+
+
+
+   .. py:method:: drop()
+
+      drops object
+
+      Supports:
+      most objects
+
+
+   .. py:method:: un_drop()
+
+      undrops a dropped object
+      Supports
+      - database
+      - schema
+
+
+
+   .. py:method:: create(replace: bool = False)
+
+      Supports:
+
+
+
+
+.. py:class:: Warehouse(session, name: str)
+
+   Bases: :py:obj:`AccountObject`
+
+   .. py:method:: suspend()
+
+
+   .. py:method:: resume()
+
+
+   .. py:method:: load_history(date_range_start: int, date_range_end: int, interval: str = 'hour') -> pandas.DataFrame
+
+      This function returns warehouse activity within the last 14 days.
+      This funciton requires elevated privileges to run, either:
+      | - The ACCOUNTADMIN role can get results from this function as it has all of the global account permissions.
+      | - A role with the MONITOR USAGE global privilege on the ACCOUNT can query this function for any warehouses in the account.
+      | - A role with the MONITOR privilege on the WAREHOUSE can query this function for the warehouse it has permissions on.
+      | - A role with the OWNERSHIP privilege on the WAREHOUSE has all permissions on the warehouse including MONITOR.
+      | (https://docs.snowflake.com/en/sql-reference/functions/warehouse_load_history)
+
+      :param date_range_start: start of hours/days ago interval
+      :type date_range_start: int
+      :param date_range_end: end of hours/days ago interval
+      :type date_range_end: int
+      :param interval: set the date range to either "days" or "hours"
+      :type interval: str
+
+      :returns: A snowpark dataframe with the unioned input dataframes
+      :rtype: snowpark.DataFrame
+
+      .. rubric:: Example
+
+      Get the load history for the warehouse for the last 12 hours
+
+      | >> warehouse.load_history(12, 0, interval = "hour")
+      |
+      | Returns Pandas DataFrame With:
+      | - START_TIME
+      | - END_TIME
+      | - WAREHOUSE_NAME
+      | - AVG_RUNNING
+      | - AVG_QUEUED_LOAD
+      | - AVG_QUEUED_PROVISIONING
+      | - AVG_BLOCKED
+
+
+   .. py:method:: metering_history(date_range_start: int, date_range_end: int, interval: str = 'hour')
+
+      This table function can be used in queries to return the hourly credit usage for a single warehouse (or all the warehouses in your account) within a specified date range.
+      This funciton requires elevated privileges to run, either:
+      | - The ACCOUNTADMIN role can get results from this function as it has all of the global account permissions.
+      | - A role with the MONITOR USAGE global privilege on the ACCOUNT can query this function for any warehouses in the account.
+      (https://docs.snowflake.com/en/sql-reference/functions/warehouse_metering_history)
+
+      :param date_range_start: start of hours/days ago interval
+      :type date_range_start: int
+      :param date_range_end: end of hours/days ago interval
+      :type date_range_end: int
+      :param interval: set the date range to either "days" or "hours"
+      :type interval: str
+
+      :returns: A snowpark dataframe with the unioned input dataframes
+      :rtype: snowpark.DataFrame
+
+      .. rubric:: Example
+
+      Get the load history for the warehouse for the last 12 hours
+
+      | >> warehouse.metering_history(12, 0, interval = "hour")
+      |
+      | Returns Pandas DataFrame With:
+      | - START_TIME
+      | - END_TIME
+      | - WAREHOUSE_NAME
+      | - CREDITS_USED
+      | - CREDITS_USED_COMPUTE
+      | - CREDITS_USED_CLOUD_SERVICES
+
+
+   .. py:method:: query_history(date_range_start: int, date_range_end: int, interval: str = 'hour', result_limit: int = 1000)
+
+
+   .. py:method:: resize_recommendation(auto_apply: bool = False) -> str
+
+      Keeping this simple as a starting point.
+      In most cases rules should be customized for individual use cases.
+      Rules:
+      | - If: Local disk spillage over the last 3 days > 30% for the longest running queries
+      | - Then: recommend size up warehouse
+      |
+      | - If: Local disk spillage over the last 3 days < 2% for the longest running queries
+      | - Then: recommend downsizing warehouse
+      |
+      | - If: Max queued overload time > 10 minutes
+      | - And: Local disk spillage over the last 3 days < 2% for the longest running queries
+      | - Then: recommend scaling out
+      |
+      | - If: Max queued overload time > 10 minutes
+      | - And: Local disk spillage over the last 3 days > 2% for the longest running queries
+      | - Then: recommend scaling up
+
+
+
+   .. py:method:: resize(wh_size: str)
+
+      Resize the warehouse to specified size
+      Warehouse sizes:
+      - XSMALL , 'X-SMALL'
+      - SMALL
+      - MEDIUM
+      - LARGE
+      - XLARGE , 'X-LARGE'
+      - XXLARGE , X2LARGE , '2X-LARGE'
+      - XXXLARGE , X3LARGE , '3X-LARGE'
+      - X4LARGE , '4X-LARGE'
+      - X5LARGE , '5X-LARGE'
+      - X6LARGE , '6X-LARGE'
+
+      :param wh_size: specified warehouse size
+      :type wh_size: str
+
+      :returns: a string with execution status
+      :rtype: str
+
+      .. rubric:: Example
+
+      Resize the warehouse to "SMALL" size
+
+      | >> warehouse.resize("SMALL")
+
+
+   .. py:method:: set_auto_suspend(seconds: int)
+
+      Specifies the number of seconds of inactivity after which a warehouse is automatically suspended.
+      | - Setting a value less than 60 is allowed, but may not result in the desired/expected behavior because the background process that suspends a warehouse runs approximately every 60 seconds and, therefore, is not intended for enabling exact control over warehouse suspension.
+      | - Setting a 0 or NULL value means the warehouse never suspends
+
+      :param seconds: the number of seconds of inactivity after which a warehouse is automatically suspended
+      :type seconds: int
+
+      :returns: a string with execution status
+      :rtype: str
+
+      .. rubric:: Example
+
+      Set the warehouse timeout to 60 seconds
+
+      | >> warehouse.auto_suspend(60)
+
+
+
+.. py:class:: Role(session, name: str)
+
+   Bases: :py:obj:`AccountObject`
+
+   .. py:method:: show_grants_of()
+
+
+   .. py:method:: show_grants_to()
+
+
+   .. py:method:: show_future_grants()
+
+
+   .. py:method:: show_grants_recursive()
+
+      If a role is granted to another role,
+      this function will also look at the privileges of the granted roles
+
+
+
+
+.. py:class:: User(session, name: str)
+
+   Bases: :py:obj:`AccountObject`
+
+   .. py:method:: show_grants_to() -> pandas.DataFrame
+
+      return dataframe with grant information
+
+
+   .. py:method:: get_roles() -> list
+
+      return granted roles as Role objects
+
+
+   .. py:method:: get_all_privileges() -> pandas.DataFrame
+
+      return all privileges for a user
+
+
+
+   .. py:method:: check_privilege(schema_object: ice_pick.schema_object.SchemaObject) -> list
+
+      maybe a quick way to show privilege on object?
+
+
+
+
 .. py:function:: extend_session(Session: extend_session.Session) -> extend_session.Session
 
    Returns the extended Session class
@@ -324,7 +604,7 @@ Functions
    >> session = extend_session(Session).builder.configs(connection_parameters).create()
 
 
-.. py:function:: auto_union_standalone(session: snowflake.snowpark.Session, union_dfs: list) -> snowflake.snowpark.DataFrame
+.. py:function:: concat_standalone(session: snowflake.snowpark.Session, union_dfs: list) -> snowflake.snowpark.DataFrame
 
    Returns a unioned dataframe from the input list of dataframes based on column names.
    Primarly to handle cases where the number of columns do not match,
@@ -366,5 +646,47 @@ Functions
    | |NULL  |NULL   |testing_d  |testing_f  |
    | |NULL  |NULL   |testing_g  |testing_h  |
    | ----------------------------------------
+
+
+.. py:function:: melt_standalone(session: snowflake.snowpark.Session, df: snowflake.snowpark.DataFrame, id_vars: list, value_vars: list, var_name: str = 'variable', value_name: str = 'value') -> snowflake.snowpark.DataFrame
+
+   Returns a unioned dataframe from the input list of dataframes based on column names.
+   Primarly to handle cases where the number of columns do not match,
+   which is not suppored by the base union function.
+   If columns do not match, non-matching columns are added with null values to the base dataframes.
+
+   :param session: session object
+   :type session: Session
+   :param df: A snowpark dataframe to melt
+   :type df: snowpark.DataFrame
+   :param id_vars: Column names to use as identifiers
+   :type id_vars: list
+   :param value_vars: Column names to unpivot
+   :type value_vars: list
+   :param var_name: Name of the variable column
+   :type var_name: str, default 'variable'
+   :param value_name: Name of the value column
+   :type value_name: str, default 'value'
+
+   :returns: A snowpark dataframe with the unpivoted dataframes
+   :rtype: snowpark.DataFrame
+
+   .. rubric:: Example
+
+   | >> schema = StructType([StructField("A", StringType()), StructField("B", IntegerType()), StructField("C", IntegerType())])
+   | >> df = session.create_dataframe([['a', 1, 2], ['b', 3, 4], ['c', 5, 6]], schema)
+   | >> melt_df = session.melt(df, ['A'], ['B', 'C'])
+   | >> melt_df.show()
+
+   | ------------------------------
+   | |"A"  |"VALUE"  |"VARIABLE"  |
+   | ------------------------------
+   | |a    |1        |B           |
+   | |b    |3        |B           |
+   | |c    |5        |B           |
+   | |a    |2        |C           |
+   | |b    |4        |C           |
+   | |c    |6        |C           |
+   | ------------------------------
 
 
