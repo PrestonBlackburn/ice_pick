@@ -35,8 +35,8 @@ def test_ext_functions():
     mock_ext_session = Session_ext(mock_connection)
 
     # Create objects
-    wh_ext = mock_ext_session.Warehouse("COMPUTE_WH")
-    role_ext = mock_ext_session.Role("ROLE1")
+    wh_ext = mock_ext_session.warehouse("COMPUTE_WH")
+    role_ext = mock_ext_session.role("ROLE1")
 
     # account object test
     assert wh_ext.name == "COMPUTE_WH"
