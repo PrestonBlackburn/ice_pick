@@ -3,6 +3,7 @@ from typing import List
 import copy
 import re
 import configparser
+import functools
 
 from snowflake.snowpark import Session
 import snowflake.snowpark as snowpark
@@ -21,14 +22,28 @@ import pandas as pd
 import numpy as np
 
 
+# decorator for dry run sql
+class SQLTracker:
+    def __init__(self, func):
+        functools.update_wrapper(self, func)
+        self.func = func
+        self.sql = []
+
+    def __call__(self, *args, **kwargs):
+        self.sql.append(args[1])
+        return self.func(*args, **kwargs)
+    
+
 # maybe add an option to log all sql executions
+# and collect all of the sql before execution?
+# --- That could make it more confusing if sql isn't executed right away
 # could be nice to have more transparency
 # (at least add logging for debugging)
-def snowpark_query(session, sql, non_select=False):
+@SQLTracker
+def snowpark_query(session, sql, non_select=False, dry=False, collect=False):
     """
     non-select queries include things like:
      "show databases;"
-
 
     """
 

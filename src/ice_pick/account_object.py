@@ -26,6 +26,17 @@ import pandas as pd
 # RESOURCE MONITOR
 
 
+class Account:
+    """
+        (TODO - see how this is handled in snowflake)   
+        For now here just as a reminder and to help with global privileges
+        Some things can only be accessed at the account level
+    """
+    def __init__(self, session):
+        self.session = session
+
+
+
 # might remove this class, it seems like a lot of account objects have their own rules
 class AccountObject:
     def __init__(self, session, name: str, object_type: str):
@@ -609,4 +620,8 @@ class Integration(AccountObject):
 
 class NetworkPolicy(AccountObject):
     def __init__(self, session, name: str):
-        super().__init__(session, name, "schema")
+        super().__init__(session, name, "network policy")
+
+class ResourceMonitor(AccountObject):
+    def __init__(self, session, name: str):
+        super().__init__(session, name, "resource monitor")
