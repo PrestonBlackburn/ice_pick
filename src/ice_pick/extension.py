@@ -90,7 +90,6 @@ def create_account_object_filter(
        object_names,
        object_types,
        ignore_names = None,
-    
 ):
     return AccountObjectFilter(
         self, object_names, object_types, ignore_names
@@ -155,14 +154,14 @@ def extend_session(Session: Session) -> Session:
 
     # adding the methods to create the account objects
     Session.create_account_object = create_account_object
-    Session.create_role = create_role
-    Session.create_warehouse = create_warehouse
-    Session.Ucreate_user = create_user
-    Session.Dcreate_database = create_database
-    Session.create_schema = create_schema
-    Session.create_integration = create_integration
-    Session.create_network_policy = create_network_policy
-    Session.create_resource_monitor = create_resource_monitor
+    Session.role = create_role
+    Session.warehouse = create_warehouse
+    Session.user = create_user
+    Session.database = create_database
+    Session.schema = create_schema
+    Session.integration = create_integration
+    Session.network_policy = create_network_policy
+    Session.resource_monitor = create_resource_monitor
 
     Session.create_account_object_filter = create_account_object_filter
     
