@@ -14,6 +14,8 @@ import numpy as np
 
 from ice_pick.utils import snowpark_query
 
+import ice_pick
+
 
 @dataclass
 class SchemaObject:
@@ -114,6 +116,42 @@ class SchemaObject:
         grants_df = snowpark_query(self.session, grants_sql, non_select=True)
 
         return grants_df
+    
+    def get_grant_objects(self) -> list:
+        
+        object_exceptions = ['USER FUNCTION', 'PROCEDURE']
+
+        if self.object_type not in object_exceptions:
+            grants_sql = f""" show grants on {self.object_type} "{self.database}"."{self.schema}"."{self.object_name}" """
+        elif self.object_type == "USER FUNCTION":
+            func_name = self.object_name.split("(")[0]
+            func_args = "(" + self.object_name.split("(")[-1]
+            grants_sql = f""" show grants on FUNCTION "{self.database}"."{self.schema}"."{func_name}"{func_args} """
+        else:
+            func_name = self.object_name.split("(")[0]
+            func_args = "(" + self.object_name.split("(")[-1]
+            grants_sql = f""" show grants on {self.object_type} "{self.database}"."{self.schema}"."{func_name}"{func_args} """
+
+
+        grants_df = snowpark_query(self.session, grants_sql, non_select=True)
+        
+        # create privilege
+        if "privilege" not in grants_df.columns.tolist():
+            # need to look into this case
+            return []
+        
+        grants_df['Privilege_Obj'] = grants_df['privilege'].apply(lambda x: ice_pick.privileges.Privilege(self, x))
+        
+        grants_df['Role_Obj'] = grants_df['grantee_name'].apply(lambda x: ice_pick.account_object.Role(self.session, x))
+       
+        grants_df['Grant_Obj'] = grants_df.apply(
+            lambda x: ice_pick.privileges.Grant(
+            self.session, x['Privilege_Obj'], x['Role_Obj'], x['privilege']), axis=1 )
+        
+        grant_objects = grants_df['Grant_Obj'].tolist()
+
+        return grant_objects
+
 
     def grant(self, privilege: list, grantee: str) -> str:
         """grant access on object, return status

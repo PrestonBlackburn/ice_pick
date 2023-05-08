@@ -366,33 +366,6 @@ class AccountObjectFilter:
     )
 
 
-    def __post_init__(self):
-
-        # todo - update this more later
-        accepted_account_object_types = [
-            "WAREHOUSES",
-            "ROLES",
-            "USERS",
-            "DATABASES",
-            "SCHEMAS",
-            "INTEGRATIONS",
-            "NETWORK POLICIES", 
-            "RESOURCE MONITORS",
-            "WAREHOUSE",
-            "ROLE",
-            "USER",
-            "DATABASE",
-            "SCHEMA",
-            "INTEGRATION",
-            "NETWORK POLICY", 
-            "RESOURCE MONITOR",
-        ]
-
-
-        if self.object_types.upper() not in accepted_account_object_types:
-            raise ValueError(f"object is not in accepted object type of: \n {accepted_account_object_types}")
-
-
     def _query_account_object_helper(self) -> Dict[str, pd.DataFrame]:
         """ 
             get all avialable account objects based on type

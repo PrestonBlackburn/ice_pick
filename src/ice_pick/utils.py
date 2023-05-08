@@ -63,6 +63,24 @@ def snowpark_query(session, sql, non_select=False, dry=False, collect=False):
         return df
 
 
+
+# ----------------------   Account State Management --------------------------
+# Is this out of scope?
+# Should this just be filter?
+
+
+
+
+
+
+
+
+
+
+
+
+# ---------------------   Pandas-like Functionality  --------------------
+# (mostly just to cover edge cases, or features I want)
 ### Auto union
 def _get_schemas(union_dfs: list) -> list:
     # get a flat list of all structs in all dataframes

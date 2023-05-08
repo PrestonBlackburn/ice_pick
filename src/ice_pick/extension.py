@@ -4,10 +4,12 @@ For now this is to give ice_pick a more native feel, where added ice_pick functi
 """
 
 from snowflake.snowpark import Session
+from typing import List, Union, Literal
 
 from ice_pick.schema_object import SchemaObject
 from ice_pick.account_object import (
     AccountObject,
+    Account,
     Warehouse, 
     Role, 
     User,
@@ -23,6 +25,8 @@ from ice_pick.utils import concat_standalone
 from ice_pick.utils import melt_standalone
 
 from ice_pick.account_object import AccountObject, Warehouse, Role, User
+
+from ice_pick.privileges import Privilege, Grant
 
 
 # todo - create a wrapper/decorator to help with monkey patching
@@ -82,9 +86,6 @@ def create_resource_monitor(self, name):
     return ResourceMonitor(self, name)
 
 
-
-
-
 def create_account_object_filter(
        self,
        object_names,
@@ -96,6 +97,29 @@ def create_account_object_filter(
     )
 
 
+
+# ----------------------- Privileges/Grants -----------------------------
+
+
+def create_privilege(
+        object: Union[SchemaObject, AccountObject, Account],
+        privilege:str,
+     ):
+    
+    return Privilege(object, privilege)
+
+
+def create_grant(
+        self,
+        session: Session, 
+        privilege: Privilege,
+        role: Role,
+        grant_option: str = None,
+        future_str: str = None
+):
+    return Grant(
+        self, privilege, role, grant_option, future_str
+    )
 
 
 
@@ -164,6 +188,11 @@ def extend_session(Session: Session) -> Session:
     Session.resource_monitor = create_resource_monitor
 
     Session.create_account_object_filter = create_account_object_filter
+    
+
+    # permission handling
+    Session.privilege = create_privilege
+    Session.grant = create_grant
     
 
     # adding the methods to create misc functions
