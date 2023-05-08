@@ -9,6 +9,7 @@ Contains core classes of Ice Pick
 
 __all__ = [
     "AccountObject",
+    "Account",
     "Warehouse",
     "Role",
     "User",
@@ -23,6 +24,9 @@ __all__ = [
     "extend_session",
     "concat_standalone",
     "melt_standalone",
+    "Privilege",
+    "Grant",
+
 ]
 
 
@@ -36,6 +40,7 @@ from ice_pick.filters import SchemaObjectFilter, AccountObjectFilter
 
 from ice_pick.account_object import (
     AccountObject,
+    Account,
     Warehouse, 
     Role, 
     User,
@@ -45,6 +50,8 @@ from ice_pick.account_object import (
     NetworkPolicy,
     ResourceMonitor,
 )
+
+from ice_pick.privileges import Privilege, Grant
 
 from ice_pick.extension import extend_session
 from ice_pick.utils import concat_standalone

@@ -11,6 +11,8 @@ from ice_pick.schema_object import SchemaObject
 
 import pandas as pd
 
+import ice_pick
+
 
 # Account Objects
 # DATABASE
@@ -124,6 +126,42 @@ class AccountObject:
         grants_df = snowpark_query(self.session, grants_sql, non_select=True)
 
         return grants_df
+    
+
+    def get_grant_objects(self) -> list:
+
+        if self.object_type == "schema":
+            # need to qualify schema with database name
+            # handle later
+        
+            return []
+        
+        grants_sql = f""" show grants on {self.object_type} "{self.name}" """
+
+        grants_df = snowpark_query(self.session, grants_sql, non_select=True)
+
+        
+        if "privilege" not in grants_df.columns.tolist():
+            # need to look into this case
+            # I think it is for the information schema maybe?
+            return []
+        
+        
+        # create privilege
+        grants_df['Privilege_Obj'] = grants_df.apply(lambda x: ice_pick.privileges.Privilege(self, x['privilege']), axis = 1)
+        
+        grants_df['Role_Obj'] = grants_df['granted_to'].apply(lambda x: Role(self.session, x))
+       
+        grants_df['Grant_Obj'] = grants_df.apply(
+            lambda x: ice_pick.privileges.Grant(
+            self.session, x['Privilege_Obj'], x['Role_Obj'], x['privilege']), axis=1 )
+        
+        grant_objects = grants_df['Grant_Obj'].tolist()
+
+        return grant_objects
+    
+
+
 
     def drop(self):
         """
@@ -176,6 +214,8 @@ class Role(AccountObject):
         super().__init__(session, name, "role")
 
     def show_grants_of(self):
+
+
         return
 
     def show_grants_to(self):

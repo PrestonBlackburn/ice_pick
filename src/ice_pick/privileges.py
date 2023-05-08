@@ -64,11 +64,12 @@ def get_supported_privileges():
                 }   
 
     account_object_privileges = {
-        User: ['MONITOR'],
-        ResourceMonitor: ['MODIFY', 'MONITOR'],
-        Warehouse: ['MODIFY', 'MONITOR', 'USAGE', 'OPERATE'],
-        Database: ['CREATE DATABASE ROLE', 'CREATE SCHEMA', 'IMPORTED PRIVILEGES', 'MODIFY', 'MONTIOR', 'USAGE'],
-        Integration: ['USAGE', 'USE_ANY_ROLE'],
+        User: ['MONITOR', 'OWNERSHIP'],
+        Role: ['USAGE', 'OWNERSHIP'],
+        ResourceMonitor: ['MODIFY', 'MONITOR', 'OWNERSHIP'],
+        Warehouse: ['MODIFY', 'MONITOR', 'USAGE', 'OPERATE', 'OWNERSHIP'],
+        Database: ['CREATE DATABASE ROLE', 'CREATE SCHEMA', 'IMPORTED PRIVILEGES', 'MODIFY', 'MONTIOR', 'USAGE', 'OWNERSHIP'],
+        Integration: ['USAGE', 'USE_ANY_ROLE', 'OWNERSHIP'],
         Schema: ['MODIFY', 
                 'MONITOR',
                 'USAGE',
@@ -91,30 +92,32 @@ def get_supported_privileges():
                 'CREATE TABLE',
                 'CREATE TASK',
                 'CREATE VIEW',
-                'ADD SEARCH OPTIMIZATION'
+                'ADD SEARCH OPTIMIZATION',
+                'OWNERSHIP'
             ]
+
         }
 
 
     schema_object_privileges = {
-        "TABLE": ['SELECT', 'INSERT', 'UPDATE', 'TRUNCATE', 'REFERENCES'],
-        "VIEW": ['SELECT', 'REFERENCES'],
-        "MATERIALIZED VIEW": ['SELECT', 'REFERENCES'],
-        "SEQUENCE": ["USAGE"],
-        "USER FUNCTION": ["USAGE"],
-        "EXTERNAL FUNCTION": ["USAGE"],
-        "PROCEDURE": ["USAGE"],
-        "FILE FORMAT": ["USAGE"],
-        "INTERNAL STAGE": ['READ', 'WRITE'],
-        "EXTERNAL STAGE": ['USAGE'],
-        "PIPE": ['MONITOR', 'OPERATE'],
-        "MASKING POLICY": ['APPLY'],
-        "PASSWORD POLICY": ['APPLY'],
-        "ROW ACCESS POLICY": ['APPLY'],
-        "SESSION POLICY": ['APPLY'],
-        "TAG": ['APPLY'],
-        "ALERT": ['OPERATE'],
-        "SECRET": ['USAGE'],
+        "TABLE": ['SELECT', 'INSERT', 'UPDATE', 'TRUNCATE', 'REFERENCES', 'OWNERSHIP'],
+        "VIEW": ['SELECT', 'REFERENCES', 'OWNERSHIP'],
+        "MATERIALIZED VIEW": ['SELECT', 'REFERENCES', 'OWNERSHIP'],
+        "SEQUENCE": ["USAGE", 'OWNERSHIP'],
+        "USER FUNCTION": ["USAGE", 'OWNERSHIP'],
+        "EXTERNAL FUNCTION": ["USAGE", 'OWNERSHIP'],
+        "PROCEDURE": ["USAGE", 'OWNERSHIP'],
+        "FILE FORMAT": ["USAGE", 'OWNERSHIP'],
+        "INTERNAL STAGE": ['READ', 'WRITE', 'OWNERSHIP'],
+        "EXTERNAL STAGE": ['USAGE', 'OWNERSHIP'],
+        "PIPE": ['MONITOR', 'OPERATE', 'OWNERSHIP'],
+        "MASKING POLICY": ['APPLY', 'OWNERSHIP'],
+        "PASSWORD POLICY": ['APPLY', 'OWNERSHIP'],
+        "ROW ACCESS POLICY": ['APPLY', 'OWNERSHIP'],
+        "SESSION POLICY": ['APPLY', 'OWNERSHIP'],
+        "TAG": ['APPLY', 'OWNERSHIP'],
+        "ALERT": ['OPERATE', 'OWNERSHIP'],
+        "SECRET": ['USAGE', 'OWNERSHIP'],
     }
 
     return global_privileges, account_object_privileges, schema_object_privileges
@@ -148,37 +151,36 @@ class Privilege:
 
     """
     object: Union[SchemaObject, AccountObject, Account]
-    privilege:str
+    definition:str
 
 
     # privilege input validation:
     def __post_init__(self):
         global_privileges, account_object_privileges, schema_object_privileges = get_supported_privileges()
-        self.privilege = self.privilege.upper()
+        self.privilege = self.definition.upper()
 
         # Get privilege options and make sure they match
         if isinstance(self.object, AccountObject):
             privilege_options = account_object_privileges[self.object.__class__]
 
-            if self.privilege not in privilege_options:
-                raise ValueError(f"""privilege {self.privilege} is not in privilege options {privilege_options} 
+            if self.definition not in privilege_options:
+                raise ValueError(f"""privilege {self.definition} is not in privilege options {privilege_options} 
                                   for account object type {self.object}""")
 
-        if isinstance(self.object, SchemaObject):
+        elif isinstance(self.object, SchemaObject):
             privilege_options = schema_object_privileges[self.object.object_type]
 
-            if self.privilege not in privilege_options:
-                raise ValueError(f"""privilege {self.privilege} is not in privilege options {privilege_options} 
+            if self.definition not in privilege_options:
+                raise ValueError(f"""privilege {self.definition} is not in privilege options {privilege_options} 
                                   for schema object type {self.object.object_type}""")
             
-        if isinstance(self.object, Account):
+        elif isinstance(self.object, Account):
             privilege_options = global_privileges[self.object.__class__]
 
-            if self.privilege not in privilege_options:
-                raise ValueError(f"""privilege {self.privilege} is not in privilege options {privilege_options} 
+            if self.definition not in privilege_options:
+                raise ValueError(f"""privilege {self.definition} is not in privilege options {privilege_options} 
                                   for account {self.object.object_type}""")
             
-
         else:
             raise ValueError(f'The input object {self.object} is not an Account, AccountObject or SchemaObject')
 
@@ -191,13 +193,13 @@ class Grant:
     def __init__(self,
                 session: Session, 
                 privilege: Privilege,
-                to_object: Union[Role, User],
+                role: Role,
                 grant_option: str = None,
                 future_str: str = None):
         
         self.session = session
-        self.privilege = privilege
-        self.to_object = to_object
+        self.privilege_str = privilege.definition
+        self.role = role
         self.on_object = privilege.object
         self.grant_option = grant_option
         self.future_str = future_str
@@ -206,7 +208,7 @@ class Grant:
     def __repr__(self):
         return (
             f"{self.__class__.__name__}"
-            f"(session={self.session!r}, to_object={self.to_object!r}, on_object={self.on_object!r}, privilege={self.privilege!r})"
+            f"(session={self.session!r}, role={self.role!r}, on_object={self.on_object!r}, privilege_str={self.privilege_str!r})"
         )
     
 
@@ -217,8 +219,13 @@ class Grant:
 
 
     def execute_grant(self):
+        """ create the grant """
 
-        return
+        grant_sql = f""" grant {self.privilege_str} on {self.on_object} to {self.role.name} """
+
+        grant_df = snowpark_query(self.session, grant_sql, non_select=True)
+
+        return grant_df
 
 
     def revoke():
