@@ -88,9 +88,9 @@ class AccountObject:
 
         return desc_df
 
-    def get_ddl(self):
+    def get_ddl(self, fully_qualified:bool = True) -> str:
         """
-        Return the ddl of the schema object as a string
+        Return the ddl of the account object as a string
 
         Supports:
         - DATABASE
@@ -99,14 +99,14 @@ class AccountObject:
         """
         support_list = ["database", "schema"]
 
-        if self.name not in support_list:
-            desc_df = f"""selected warehouse size not supported: 
-                         supported warehouse sizes: {support_list}"""
+        if self.object_type.lower() not in support_list:
+            get_ddl_support = f"""selected acount object not supported for get_ddl: 
+                         supported account objects: {support_list}"""
 
-            raise ValueError(desc_df)
+            raise ValueError(get_ddl_support)
 
         ddl_sql = f"""select get_ddl('{self.object_type}',
-                '{self.name}' );"""
+                '{self.name}', {str(fully_qualified).lower()} );"""
         ddl_df = snowpark_query(self.session, ddl_sql)
 
         ddl_str = ddl_df.iloc[0][0]
@@ -115,6 +115,34 @@ class AccountObject:
         self.ddl_str = ddl_str
 
         return ddl_str
+    
+    def mock_ddl(self) -> str:
+        """
+        Return the ddl of objects that don't work with the Snowflake GET_DDL() function
+
+        Supports:
+        - WAREHOUSE
+        - USER
+        - ROLE
+
+        """
+
+        support_list = ["warehouse", "role", "user"]
+
+        if self.object_type.lower() not in support_list:
+            mock_ddl_support = f"""selected account object not supported for mock_ddl: 
+                         supported account objects: {support_list}"""
+
+            raise ValueError(mock_ddl_support)
+        
+        if self.object_type.lower() == 'warehouse':
+            ddl_str = f""" create {self.object_type} if not exists {self.name}  with warehouse_size='X-SMALL' auto_suspend = 60 """
+
+        else:
+            ddl_str = f""" create {self.object_type} if not exists {self.name} """
+        
+        return ddl_str
+
 
     def get_grants_on(self):
         """
@@ -212,6 +240,11 @@ class AccountObject:
 class Role(AccountObject):
     def __init__(self, session, name: str):
         super().__init__(session, name, "role")
+    
+    def mock_ddl(self) -> str:
+
+        return f""" create role if not exists {self.name} """
+
 
     def show_grants_of(self):
 
@@ -246,6 +279,10 @@ class Role(AccountObject):
 class User(AccountObject):
     def __init__(self, session, name: str):
         super().__init__(session, name, "user")
+
+    def mock_ddl(self) -> str:
+
+        return f""" create user if not exists {self.name}"""
 
     def show_grants_to(self) -> pd.DataFrame:
         """
@@ -344,6 +381,10 @@ class User(AccountObject):
 class Warehouse(AccountObject):
     def __init__(self, session, name: str):
         super().__init__(session, name, "warehouse")
+
+    def mock_ddl(self):
+
+        return f""" create warehouse if not exists {self.name} with warehouse_size='X-SMALL' auto_suspend = 60 """
 
     def suspend(self):
         suspend_sql = f""" alter warehouse if exists {self.name} suspend"""

@@ -53,7 +53,7 @@ class SchemaObject:
 
     # Which functions should be a part of the class, and
     # which should be outside teh class?
-    def get_ddl(self, save: bool = False) -> str:
+    def get_ddl(self, save: bool = False, fully_qualified:bool = True) -> str:
         """
         Return the ddl of the schema object as a string
         if save = True: save the ddl locally
@@ -80,7 +80,7 @@ class SchemaObject:
             self.ddl_object_type = self.object_type
 
         ddl_sql = f"""select get_ddl('{self.ddl_object_type}',
-                '{self.database}.{self.schema}.{self.object_name}' );"""
+                '{self.database}.{self.schema}.{self.object_name}', {str(fully_qualified).lower()});"""
         ddl_df = snowpark_query(self.session, ddl_sql)
 
         ddl_str = ddl_df.iloc[0][0]
