@@ -26,9 +26,9 @@ requires-python = ">=3.8.0"
 dependencies = [
     "pandas",
     "snowflake-snowpark-python",
-    "setuptools>=40.6.0",
+    "setuptools",
     "wheel",
-    "cloudpickle>=1.6.0,<=2.0.0",
+    "cloudpickle",
 ]
 
 
